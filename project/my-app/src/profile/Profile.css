@@ -1,0 +1,9 @@
+.profilePage{
+    display: flex;
+}
+
+button{
+    width: 130px;
+    font-family: monospace;
+    font-size: large;
+}

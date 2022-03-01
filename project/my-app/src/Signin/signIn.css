@@ -1,0 +1,51 @@
+.loginForm{
+    text-align: center;
+    background-image: url("C:\Users\Yara Waheb\OneDrive\שולחן העבודה\lotus\project\my-app\public\images\login.PNG");
+    border-radius: 20px;
+    max-width: 500px;
+    margin: auto;
+    margin-top: 50px;
+    padding-bottom: 50px;
+    box-shadow:  2px 2px 2px 2px rgb(231, 246, 255) ,1px 2px 1px rgb(170, 214, 243);
+    
+
+}
+.theLoginForm{
+    justify-content: center;
+}
+.loginForm input{
+    border-radius: 5px;
+    text-align: center;
+    border-style: none;
+    background-color: rgb(236, 253, 255);
+    
+    box-shadow:  2px 0 2px 2px rgb(191, 253, 255) ,1px 2px 1px rgb(233, 246, 248);
+}
+.loginForm .Logo-trip1{
+    height: 250px;
+    width: 250px;
+}
+.loginForm .usernameFeild{
+    margin-top: 8px;
+ 
+}
+.loginForm .passwordField{
+    margin-top: 8px;
+}
+.loginForm .loginButton button{
+    margin-top: 15px;
+    background-color: rgb(177, 245, 245);
+    font-size: large;
+    font-style: italic;
+    border-radius: 15px;
+    border-style: none;
+}
+.loginForm .createAccountbtn button{
+    margin-top: 15px;
+    background-color: rgb(176, 240, 240);
+    font-size: large;
+    font-style: italic;
+    border-radius: 15px;
+    border-style: none;
+    width: 200px;
+}

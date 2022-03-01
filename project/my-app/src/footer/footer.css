@@ -1,0 +1,59 @@
+.Footerall{
+    
+    text-align: center;
+    background-image: url("C:\Users\Yara Waheb\OneDrive\שולחן העבודה\lotus\project\my-app\public\images\3.PNG");
+    width: 100%;
+    height: 250px;
+    margin-top: 120px;
+}
+li{
+    list-style: none;
+
+}
+.actions{
+    display: flex;
+    justify-content: space-around;
+    margin-left: 80px;
+}
+.foot{
+    max-width: 100%;
+    text-align: center;
+    font-size: 50px;
+    color: rgb(4, 4, 54);
+    font-weight: bold;
+    text-shadow:5px 5px 10px rgb(208, 208, 224);
+        margin-bottom: 10px;
+    padding-top: 90px;
+
+}
+.Yara{
+    font-size: medium;
+    color: rgb(8, 4, 27);
+    margin-bottom: 1px;
+}
+
+button a{
+
+    text-decoration: none;
+    transform: translate(-5px, -5px);
+    transition: transform 170ms ease;
+    transform-origin: top;
+    color: #000;
+    
+}
+button a:hover  {
+    transform: translate(0,0);
+  }
+    
+.Footerall button{
+    width: 200px;
+    height: 120px;
+    font-size: x-large;
+    font-style: italic;
+    border-radius: 25px;
+    border-color: rgb(30, 5, 100);
+    color: #000;
+    margin-top: -150px;
+    margin-right: 100px;
+    
+}

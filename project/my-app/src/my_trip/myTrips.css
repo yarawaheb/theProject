@@ -1,0 +1,8 @@
+button{
+    width: 130px;
+    font-family: monospace;
+    font-size: large;
+}
+.myTripPage{
+    display: flex;
+}

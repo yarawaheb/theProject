@@ -1,0 +1,26 @@
+
+.createForm{
+    text-align: center;
+    background-image: url("C:\Users\Yara Waheb\OneDrive\שולחן העבודה\lotus\project\my-app\public\images\create.PNG");
+    border-radius: 20px;
+    max-width: 500px;
+    margin: auto;
+    margin-top: 50px;
+    padding-bottom: 50px;
+    box-shadow:  2px 2px 2px 2px rgb(231, 201, 151) ,1px 2px 1px rgb(227, 241, 213);
+    
+}
+.createForm input{
+    text-align: center;
+}
+.createButton button{
+    margin-top: 13px;
+    background-color: rgb(176, 240, 240);
+    font-size: large;
+    font-style: italic;
+    border-radius: 15px;
+}
+.createForm .Logo-trip1{
+    height: 250px;
+    width: 250px;
+}

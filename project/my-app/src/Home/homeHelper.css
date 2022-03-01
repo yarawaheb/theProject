@@ -1,0 +1,60 @@
+.motto1{
+    display: flex;
+    justify-content:center;
+    background-image: url("C:\Users\Yara Waheb\OneDrive\שולחן העבודה\lotus\project\my-app\public\images\home.jpeg");
+    height: 400px;
+    background-size:cover;
+    padding-top: 20px;
+
+}
+.mottoQuote{
+    font-size: xx-large;
+    padding-top: 50px;
+    max-width: 500px;
+    text-align: center;
+    font-weight: bold;
+
+    
+}
+
+
+.brands{
+    display:flex;
+    margin: auto;
+    justify-content:center;
+    list-style: none;
+
+}
+.brands img{
+    height: 170px;
+    width: 170px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 2px;
+    opacity: 0.85;
+    box-shadow: 0 2px slategrey;
+    transform: translate(-5px, -5px);
+    transition: transform 170ms ease;
+    transform-origin: top;
+}
+.brands img:hover  {
+    transform: translate(0,0);
+    transform: scale(1.1);
+  }
+
+
+
+
+.imag{
+    display: flex;
+    margin-top: 10%;
+    margin-bottom: 4%;
+    list-style: none;
+}
+.contimg{
+width: 180px;
+height: 200px;
+border-radius: 9%;
+}
+
+  

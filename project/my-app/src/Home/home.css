@@ -1,0 +1,35 @@
+
+.motto{
+
+    max-width: 40%;
+    text-align: center;
+    margin: auto;
+}
+
+.motto  h1{
+    color: rgb(84, 89, 109);
+    font-style:normal;
+    font-size:xx-large;
+    text-shadow: 0 1px  rgb(12, 0, 44);
+}
+label{
+    margin-left: 50px;
+    text-shadow: rgb(211, 152, 64);
+    font-family: fantasy;
+    font-size: xx-large;
+    margin-bottom: 200px;
+    
+}
+.bestOf{
+    background-color: rgb(247, 245, 240);
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin: auto;
+   
+} 
+
+    
+    
+    
+    
+

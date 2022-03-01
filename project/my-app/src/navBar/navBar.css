@@ -1,0 +1,103 @@
+.Navbar1{
+    background-color: black;
+    height: 100px;
+
+}
+
+.allItems{
+    display:flex;
+    justify-content: center;
+}
+
+.Navbar1 .pagesItemsUl{
+    display:flex;
+
+    
+}
+
+.Navbar1 .pagesItemsUl li{
+   list-style: none;
+   margin-left: 30px;
+   display: flex;
+   
+}
+
+.Navbar1 .pagesItemsUl li a{
+    text-decoration: none;
+    color: rgb(235, 243, 213);
+    
+    
+ }
+
+.homeicon{
+    height: 70px;
+    width: 30px;
+}
+.searchicon{
+    height: 70px;
+    width: 30px;
+    color: rgb(255, 255, 255);
+}
+.notiicon{
+    height: 70px;
+    width: 30px;
+}
+.inboxicon{
+    height: 70px;
+    width: 30px;
+}
+.profileicon{
+    height: 70px;
+    width: 30px;
+}
+.loginicon{
+    height: 70px;
+    width: 30px;
+}
+.Logo-trip{
+    height: 80px;
+    width: 90px;
+    margin-right: 70px;
+    margin-top: 8px;
+}
+.searchInput{
+    height: 25px;
+    width: 400px;
+    display: flex;
+    justify-content:space-between;
+    margin-left: 150px;
+    margin-top: 20px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    margin-right: 100px;
+    text-align: center;
+
+}
+.Notifications {
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50%;
+    color: white;
+    position: absolute;
+    top: 30px;
+    right: 212px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+  .Inbox {
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50%;
+    color: white;
+    position: absolute;
+    top: 30px;
+    right: 148px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
