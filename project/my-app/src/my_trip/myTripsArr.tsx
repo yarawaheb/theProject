@@ -14,8 +14,8 @@ export let MyTripsActions = [
     },
     {
         Icon: <MdOutlineNoteAlt className="profileicon"></MdOutlineNoteAlt>,
-        title: "Notes",
-        url: "notes"
+        title: "New Trip",
+        url: "newTrip"
     }
     
 ];

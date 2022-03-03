@@ -20,8 +20,6 @@ router.put("2/:username/:category", async (req, res) => {
 });
 //get all posts
 router.get("/allPosts" , async(req,res)=>{
-  const result = [];
-    let k = 0;
     const post = await User.find({ posts: {$ne: []} }, { userName:1,posts:1});
     res.json(post);
 })

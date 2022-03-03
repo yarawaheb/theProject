@@ -5,8 +5,8 @@ export  function MyProfile() {
    
     return (
         <div className='myprofilePage'>
-           
-                <Feed/>
+        
+         <Feed/>
             
             
         </div>

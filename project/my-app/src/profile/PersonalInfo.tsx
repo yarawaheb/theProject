@@ -15,18 +15,6 @@ export function Personalinfo(props: { newUser: any}) {
         userName: "",
         password: "",
     })
-    // let lusername 
-    // let lfiestname
-    // let llastname 
-    // useEffect(() => {
-    //     console.log("before axios");
-    //      lusername = setFirstName(localStorage.getItem('userNameLogged'))
-    //      lfiestname = setFirstName(localStorage.getItem('firstNameLogged'))
-    //      llastname = setFirstName(localStorage.getItem('lastNameLogged'))
-
-    //    // setUser(users);
-           
-    // }, []);
 
    
     function textWasChanged(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,whichField: string)
