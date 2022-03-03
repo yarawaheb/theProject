@@ -1,7 +1,7 @@
 import React from 'react'
-//import {RiCopyrightLine} from "react-icons/ri";
+import {RiCopyrightLine} from "react-icons/ri";
 import { useEffect } from 'react';
-//import './footer.css'
+import './footer.css'
 
 export  function Footer1(props: {actionsArr:{Icon:JSX.Element, title: string, url: string }[],footerItems:{string:string ,Icon:JSX.Element, name: string }[]}) {
     

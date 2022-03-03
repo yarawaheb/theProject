@@ -5,6 +5,7 @@ import { setUser } from '../configStore';
 import { Personalinfo } from './PersonalInfo';
 import ProfileHelper from './ProfileHelper';
 import { ProfileActions } from './ProfileItems';
+import { Feed } from './Feed';
 
 export  function Profile() {
    
@@ -13,6 +14,7 @@ export  function Profile() {
             <div className='profilePagecon1'>
             <ProfileHelper profileactionsArr={ProfileActions} />
             </div><div className='profilePagecon2'>
+              
             <Outlet/>
             </div>
             

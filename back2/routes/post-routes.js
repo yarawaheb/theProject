@@ -2,7 +2,7 @@ const router = require("express").Router();
 const Post = require("../DB/models/post").Posts;
 const User = require("../DB/models/user").Users;
 
-//create a post part1
+//create a post 
 
 router.put("/:username", async (req, res) => {
   console.log("part1",req.body);
@@ -10,7 +10,7 @@ router.put("/:username", async (req, res) => {
   res.json("the post has been updated");
 
 });
-//create a post part1
+//set a post category info
 
 router.put("2/:username/:category", async (req, res) => {
   console.log("part2",req.body);

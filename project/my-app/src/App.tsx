@@ -18,6 +18,7 @@ import { EquipmentList } from './my_trip/equipmentList';
 import { useContext } from "react";
 import {AddPost} from './profile/AddaPost';
 import { Messenger } from './messenger/Messenger';
+import { MyProfile } from './profile/MyProfile';
 //import { AuthContext } from "./context/AuthContext";
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
           <Route path="profile" element={<Profile/>}>
              <Route path="personalInformation" element={<Personalinfo newUser={newUser}/>}/>
              <Route path="addPost" element={<AddPost/>}/>
+             <Route path="myProfile" element={<MyProfile/>}/>
           </Route>
         </Routes>
       </BrowserRouter>

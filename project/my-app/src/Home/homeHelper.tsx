@@ -1,4 +1,4 @@
-//import "./homeHelper.css"
+import "./homeHelper.css"
 export function Mooto (props: {mottoAtr:{Icon:JSX.Element, mottoQuote: string}[]}){
     return(
         <div className="motto1">

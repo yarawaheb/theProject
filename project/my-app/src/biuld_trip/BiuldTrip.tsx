@@ -1,7 +1,7 @@
 import React from 'react';
-//import styled, { css } from "styled-components";
+import styled, { css } from "styled-components";
 import GoogleMapReact from "google-map-react";
-//import "./buildTrip.css"
+import "./buildTrip.css"
 
 export  function BiuldTrip()
 {     
