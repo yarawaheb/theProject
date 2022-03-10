@@ -22,10 +22,34 @@ app.use('/auth/login',function (req, res, next) {
 })
 app.use('/users', require('./routes/users-routes'));
 app.use('/posts', require('./routes/post-routes'));
+app.use('/trips', require('./routes/trip-routes'));
 app.use('/auth', require('./routes/auth'));
 
 app.use("/conversations", require('./routes/conversations') );
 app.use("/messages", require('./routes/messages'));
+
+//////////////////////////////////////////
+const multer = require('multer')
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public')
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' +file.originalname)
+  }
+})
+
+const upload = multer({ storage: storage }).single('file')
+
+app.post('/upload', (req, res) => {
+    upload(req, res, (err) => {
+      if (err) {
+        res.sendStatus(500);
+      }
+      res.send(req.file);
+    });
+  });
 //=====================================
 var server = app.listen(5435,'127.0.0.1' , function(){
     var port = server.address().port

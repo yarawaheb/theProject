@@ -2,10 +2,27 @@ const myRepository = require('../DB/user-repository')
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken')
+const User = require("../DB/models/user").Users;
 
 router.get("/all", (req, res) => {
     res.send(myRepository.getall(req.params.all));
 });
+//follow a user
+router.put("/follow/:username", async (req, res) => {
+    await User.updateOne({ userName: req.params.username }, { $push: { followers: req.body.username } });
+    await User.updateOne({ userName: req.body.username }, { $push: { followings: req.params.username } });
+    res.json("followed!");
+  
+  });
+
+  //unfollow a user
+router.put("/unfollow/:username", async (req, res) => {
+    await User.updateOne({ userName: req.params.username }, { $pull: { followers: req.body.username } });
+    await User.updateOne({ userName: req.body.username }, { $pull: { followings: req.params.username } });
+    res.json("followed!");
+  
+  });
+
 router.post("/login", (req,res) => {
     const username = req.body.username;
     const password = req.body.password;

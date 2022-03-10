@@ -39,7 +39,7 @@ export function Signin() {
                 }).then((response1)=>{
                     console.log(response1.data);
                     
-                    if (response1.data.user.userName === undefined) {
+                    if (response1.data.user === undefined) {
                         alert(response1.data);}
                     else {
                     console.log(response1.data);
@@ -50,7 +50,7 @@ export function Signin() {
 
                     setToken(response1.data.token)
                     setUser(users);
-                    navigate('/profile/personalInformation')
+                    navigate('/profile/myProfile')
                     }})
                     
                 })

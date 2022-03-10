@@ -13,7 +13,13 @@ export function CreateAccount() {
         userName: "",
         password: "",
         _id: "",
-         followings:[""]
+         followings:[""],
+         profilePicture:"",
+         followers:[""],
+         posts:[{}],
+         chats:[{}],
+         trips:[{}],
+         equipmentList:[{}]
     })
 
     function textWasChanged(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,whichField: string)
@@ -47,7 +53,9 @@ export function CreateAccount() {
                 })
             }
             else{
-                let users=response.data.users;
+                console.log(response.data);
+                
+                let users=response.data;
                 if (users.userName === formInfo.userName) {
                     alert("This username is already exist , please choose another username")
                 }

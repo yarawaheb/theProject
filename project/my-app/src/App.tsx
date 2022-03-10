@@ -21,6 +21,7 @@ import { Messenger } from './messenger/Messenger';
 import { MyProfile } from './profile/MyProfile';
 import { Connections } from './profile/Connection';
 import NewTrip from './my_trip/newTrip';
+import { ProfileUser } from './Home/profileUser';
 //import { AuthContext } from "./context/AuthContext";
 
 function App() {
@@ -44,15 +45,9 @@ function App() {
           <Route path="createAccount" element={<CreateAccount/>} />
           <Route path="myTrips" element={<MyTrip/>}>
             <Route path="equipmentList" element={<EquipmentList/>}/>
-            <Route path="newTrip" element={<NewTrip postItem={{
-              name: "",
-              location: "",
-              imgUrl: "",
-              description: "",
-              category: ""
-            }}  />}/>
+            <Route path="newTrip" element={<NewTrip postItem={{name: "",location: "",imgUrl: "",description: "",category: ""}} userName={''}  />}/>
           </Route>
-          <Route path="buildATrip" element={<BiuldTrip/>}/>
+          <Route path="profileUser" element={<ProfileUser/>}/>
           <Route path="profile" element={<Profile/>}>
              <Route path="personalInformation" element={<Personalinfo newUser={newUser}/>}/>
              <Route path="addPost" element={<AddPost/>}/>

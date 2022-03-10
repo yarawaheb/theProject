@@ -21,13 +21,8 @@ export let ActionsArr = [
  
     {
         Icon: <MdBuild className="inboxicon"></MdBuild>,
-        title: "Build a trip",
-        url: "/buildATrip"
-    },
-    {
-        Icon: <GrGroup className="profileicon"></GrGroup>,
-        title: "My groups",
-        url: "/myGroups"
+        title: "Join a trip",
+        url: "/joinATrip"
     }
     
 ]

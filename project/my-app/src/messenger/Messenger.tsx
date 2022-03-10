@@ -17,7 +17,7 @@ export  function Messenger() {
   const [arrivalMessage, setArrivalMessage] = useState({conversationId: "",sender: "",text: "",createdAt: new Date("2016-01-04 10:34:23")});
   const [onlineUsers, setOnlineUsers] = useState([{}]);
   let socket = io("ws://localhost:8900");
-  const  [user, setUser]= useState({firstName:"", lastName: "", userName: "" ,password:"",_id:"",followings:[""]});
+  const  [user, setUser]= useState({firstName:"", lastName: "", userName: "" ,password:"",_id:"",followings:[""],profilePicture:"",followers:[""],posts:[{}],chats:[{}],trips:[{}],equipmentList:[{}]});
   getUser(setUser);
   
 

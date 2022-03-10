@@ -10,112 +10,62 @@ router.put("/:username", async (req, res) => {
   res.json("the post has been updated");
 
 });
-//set a post category info
 
-router.put("2/:username/:category", async (req, res) => {
-  console.log("part2",req.body);
-  await User.updateOne({ userName: req.params.username }, { $set: { category: req.body } });
-  res.json("the post has been updated");
-
-});
 //get all posts
 router.get("/allPosts" , async(req,res)=>{
     const post = await User.find({ posts: {$ne: []} }, { userName:1,posts:1});
     res.json(post);
 })
-router.put("/", async (req, res) => {
-  const newPost = new Post(req.body);
-  try {
-    const savedPost = await newPost.save();
-    res.json(savedPost);
-  } catch (err) {
-    console.log(err);
-  }
-});
+
+//get all posts of specific user
+router.get("/allThePosts/:userName" , async(req,res)=>{
+  const post = await User.find({ userName:req.params.userName }, {posts:1});
+  res.json(post);
+})
+
 //update a post
-
-router.put("/:id", async (req, res) => {
+router.put("/put/:userName/:id", async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
-    if (post.userId === req.body.userId) {
-      await post.updateOne({ $set: req.body });
-      res.status(200).json("the post has been updated");
-    } else {
-      res.status(403).json("you can update only your post");
-    }
+    const id = parseInt(req.params.id)
+      const post = await User.updateOne({ userName: req.params.userName, posts: { $elemMatch: { postID: id } } }, { $set: { posts: req.body } })
+      res.status(200).json(post);
   } catch (err) {
-    res.status(500).json(err);
+      res.status(500).json(err);
   }
 });
+
+
 //delete a post
-
-router.delete("/:id", async (req, res) => {
+router.delete("/deletePost/:id/:userName", async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
-    if (post.userId === req.body.userId) {
-      await post.deleteOne();
+      const id = parseInt(req.params.id)
+      await User.updateOne({ userName: req.params.userName }, { $pull: { posts: { postID: id } } })
+
       res.status(200).json("the post has been deleted");
-    } else {
-      res.status(403).json("you can delete only your post");
-    }
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-//like / dislike a post
 
-router.put("/:id/like", async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    if (!post.likes.includes(req.body.userId)) {
-      await post.updateOne({ $push: { likes: req.body.userId } });
-      res.status(200).json("The post has been liked");
-    } else {
-      await post.updateOne({ $pull: { likes: req.body.userId } });
-      res.status(200).json("The post has been disliked");
-    }
   } catch (err) {
-    res.status(500).json(err);
-  }
-});
-//get a post
-
-router.get("/:id", async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    res.status(200).json(post);
-  } catch (err) {
-    res.status(500).json(err);
+      res.status(500).json(err);
   }
 });
 
-//get timeline posts
+////////////////////////////////////////////comment////////////////////////////////////////////////
+//Add comment 
+router.put("/AddComment/:postId/:userId", async (req, res) => {
+  const id = parseInt(req.params.id)
 
-router.get("/timeline/:userId", async (req, res) => {
-  try {
-    const currentUser = await User.findById(req.params.userId);
-    const userPosts = await Post.find({ userId: currentUser._id });
-    const friendPosts = await Promise.all(
-      currentUser.followings.map((friendId) => {
-        return Post.find({ userId: friendId });
-      })
-    );
-    res.status(200).json(userPosts.concat(...friendPosts));
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+  await User.updateOne({ userName: req.params.userName, posts: { $elemMatch: { postID: id } } }, { $push: { "posts.$.comment": req.body } })
 
-//get user's all posts
+  res.send("your comment is added ")
+})
 
-router.get("/profile/:username", async (req, res) => {
-  try {
-    const user = await User.findOne({ username: req.params.username });
-    const posts = await Post.find({ userId: user._id });
-    res.status(200).json(posts);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+//delete comment 
+router.delete("/DeleteComment/:userId/:postId/:commentId", async (req, res) => {
+  const id = parseInt(req.params.id)
+
+  await user.updateOne({userName: req.params.userName, posts: { $elemMatch: { postID: id} } }, { $pull: { "posts.$.comment": { commentId: { $eq: req.params.commentId } } } })
+
+  res.send("your comment is deleted")
+})
+
 
 module.exports = router;

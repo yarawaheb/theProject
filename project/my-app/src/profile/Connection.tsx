@@ -5,7 +5,7 @@ export  function Connections() {
     return (
         <div className='profilePage'>
            
-            <button> connect </button> 
+            <h1>here will be the friends list</h1>
             
             
         </div>

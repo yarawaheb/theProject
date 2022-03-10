@@ -1,16 +1,33 @@
+import axios from 'axios';
 import React, { useContext, useState } from 'react'
+import { useEffect } from 'react';
 
-export default function NewTrip(props:{postItem:{name:String,location:String,imgUrl:String,description:String,category:String}}) {
+export default function NewTrip(props:{userName:string ,postItem:{name:String,location:String,imgUrl:String,description:String,category:String}}) {
     console.log(props);
-
+    let [nextId,setNext]=useState(0);
     let [formInfo, setFormInfo] = useState({
+        tripId:nextId,
         Name: "",
+        planner:localStorage.getItem('userNameLogged'),
         days:0,
         posts:[props.postItem],
-        members:[],
+        members:[props.userName],
         equipmentList:{},
 
         })
+    useEffect(() =>  {
+        const url="http://127.0.0.1:5435/trips/allTrips/"+localStorage.getItem('userNameLogged')
+        axios.get(url)
+            .then(response => {
+                setNext(response.data+1);
+                console.log(response.data);
+                console.log(formInfo);
+                
+            });
+    },[]);
+
+
+
     function textWasChanged(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,whichField: string)
     {
         let newObj = {...formInfo,...{[whichField]: e.target.value}};
@@ -21,7 +38,11 @@ export default function NewTrip(props:{postItem:{name:String,location:String,img
 
     function newTrip(e: React.FormEvent<HTMLFormElement>) 
     {
-        e.preventDefault();
+        const url="http://127.0.0.1:5435/trips/"+localStorage.getItem('userNameLogged')
+        axios.put(url,formInfo)
+            .then(response => {
+                console.log(response.data);
+            });
     }
   return (
     <div className='newTripForm'>

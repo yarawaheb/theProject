@@ -40,27 +40,27 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
     console.log("1->  ",req.body.password);
     const user = await User.findOne({ userName: req.body.username });
-    console.log("2->  ",user.password);
-    const validPassword = await bcrypt.compare(req.body.password, user.password)
 
     if (!user) {
       res.json("user not found")
   }
-  else if (!validPassword) {
-      res.json("wrong password")
-  }
-
   else {
-      let X = jwtExpiryTimeInMilliSeconds;
-    const token = jwt.sign({ user }, jwtKey, {
-      algorithm: 'HS256',
-      expiresIn: X
-    })
-    console.log('signin - creaeted token:', token);
-    res.cookie('token', token, { maxAge: jwtExpiryTimeInMilliSeconds })
-    //res.json();
-      res.json({user,"Token was set": "set" ,token})
-  }
+    const validPassword = await bcrypt.compare(req.body.password, user.password)
+    if (!validPassword) {
+      res.json("wrong password")
+    }
+    else {
+        let X = jwtExpiryTimeInMilliSeconds;
+      const token = jwt.sign({ user }, jwtKey, {
+        algorithm: 'HS256',
+        expiresIn: X
+      })
+      console.log('signin - creaeted token:', token);
+      res.cookie('token', token, { maxAge: jwtExpiryTimeInMilliSeconds })
+      //res.json();
+        res.json({user,"Token was set": "set" ,token})
+    }
+}
   });
 
 module.exports = router;

@@ -4,9 +4,13 @@ import { MdAddLocationAlt } from 'react-icons/md';
 import { icons } from 'react-icons/lib';
 import { FormEvent, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { getUser } from '../configStore';
 
 export function AddPost() {
+  const navigate = useNavigate()
   let [postInfo, setPostInfo] = useState({
+    postID:getUser().posts.length+1,
     imgUrl: "", 
     name: "",
     description:"",
@@ -17,7 +21,6 @@ export function AddPost() {
     comments:[],
   })
   let [AttractionInfo, setAttractionInfo] = useState({
-    postID:"",
     cost:0,
     minAge:0,
     maxAge:0,
@@ -33,7 +36,6 @@ export function AddPost() {
       setAttractionInfo(newObj);
   }
   let [campingInfo, setcampingInfo] = useState({
-    postID:"",
     costPerNight:0,
     meals:"",
     viewTo:"",
@@ -49,7 +51,6 @@ export function AddPost() {
     setcampingInfo(newObj);
   }
   let [hikingInfo, sethikingInfo] = useState({
-    postID:"",
     pathLength:0,
     level:"",
     totalTime:0,
@@ -90,7 +91,7 @@ export function AddPost() {
     axios.put("http://localhost:5435/posts/"+username,postInfo)
     .then(response1 => {
         console.log(response1.data);
-          
+        navigate('/profile/myProfile')
     })
   }
     
@@ -113,7 +114,8 @@ export function AddPost() {
         </div>
         <div className='location'>
           <label htmlFor="">add a location</label>
-          <MdAddLocationAlt className="locationIcon"></MdAddLocationAlt>
+          <input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "location")}}
+          type="text"  id="location" name="location"  />
         </div>
         <div className='category'>
           <label htmlFor="">select category</label>
