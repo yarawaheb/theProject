@@ -1,12 +1,13 @@
 const io = require("socket.io")(8900, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: "*",
     },
   });
   
   let users = [];
   
   const addUser = (userId, socketId) => {
+    console.log(socketId);
     !users.some((user) => user.userId === userId) &&
       users.push({ userId, socketId });
   };
@@ -30,11 +31,12 @@ const io = require("socket.io")(8900, {
     });
   
     //send and get message
-    socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+    socket.on("sendMessage", ({ senderId,sender, receiverId,content,}) => {
+      console.log(senderId,getUser(senderId).socketId,receiverId,getUser(receiverId).socketId,content);
       const user = getUser(receiverId);
       io.to(user.socketId).emit("getMessage", {
-        senderId,
-        text,
+        sender,
+        content,
       });
     });
   

@@ -7,6 +7,7 @@ import { ProfileUser } from './../Home/profileUser';
 import { getUser, setprofileUser } from '../configStore';
 import { response } from 'express';
 import { AiOutlineComment } from 'react-icons/ai';
+import { TiDelete } from 'react-icons/ti';
 
 
 export function Feed() {
@@ -79,6 +80,12 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
     let [isOpenNewTrip, setisOpenNewTrip] = useState(false)
     let [isuserclick, setuserclick] = useState(false)
     let [isOpenComments,setIsOpenComments]=useState(false)
+    const [desc, setDesc] = useState('');
+    let [TripsAreHere,setTripsAreHere]=useState(false)
+    let [comments, setcomments] = useState(props.postItem.comments);
+    let [Trips,setTrips]=useState([{tripId:0,Name: "",planner:"",days:0,posts:[{}],members:[],equipmentList:[{}]}])
+    let url2 = 'http://127.0.0.1:5435/posts/AddComment/' + props.userName + '/' + props.postItem.postID
+
     useEffect(() =>  {
         if(props.postItem.category==="hiking"){
             sethikingInfo(props.postItem.categoryinfo);
@@ -89,6 +96,7 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
         if(props.postItem.category==="attraction"){
             setAttractionInfo(props.postItem.categoryinfo);
         }
+        
     },[]);
      let [postInfo, setPostInfo] = useState(props.postItem)
     
@@ -110,7 +118,24 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
         sethikingInfo(newObj);
     }
     let [categoryIsSet, setcatInfo] = useState({})
+    const SendComment = () => {
+        const comment = {
+            userName: getUser().userName,
+            content: desc,
+            commentId: JSON.stringify(props.postItem.comments.length + 1),
+            secCommentId: "-1"
+        }
 
+        axios.put(url2, {
+            comment
+        })
+            .then(response => {
+                console.log(response.data);
+                comments.push(comment);
+                setcomments(comments);
+                setDesc("")
+            });
+    }
     function textWasChanged(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>,whichField: string)
       {
       if(whichField==='category'){
@@ -142,14 +167,31 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
           navigate('/profile/myProfile')
       })
     }
+      async function  searchForTrips(userName: string) {
+        setIsOpen(!isOpen)
+        let url = 'http://127.0.0.1:5435/trips/allTrips/'+getUser().userName;
+        axios.get(url)
+            .then(response => {
+                console.log(response.data);
+                
+                setTrips(response.data);
+            });
+        setTripsAreHere(true)
+    }
+    
     return (<div>
         {isOpenNewTrip && <NewTrip userName={props.userName} postItem={props.postItem} ></NewTrip>}
-
+        
         <div className='addmyTrips'>
-            {isOpen && <button onClick={()=>{setisOpenNewTrip(!isOpenNewTrip)}} >new trip</button>}
+            {isOpen &&Trips!==[]&&<div>
+           
+           {Trips.map((curr, i) => {
+           return <TripName key={i} trip={curr} postItem={props.postItem}  />
+           })} 
+            <button onClick={()=>{setisOpenNewTrip(!isOpenNewTrip)}} >new trip</button></div>}
+
+       
         </div>
-        {props.userName===getUser().userName&&<button onClick={()=>{deletePost(props)}}>delete</button>}
-        {props.userName===getUser().userName&&<button onClick={()=>{setIsEditing(!isEditing)}}>edit</button>}
         <ul>
             {setprofileUser(props.userName)}
             {isuserclick&&navigate('/profileUser')}
@@ -170,7 +212,17 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
               <option value="attraction">Attraction</option>
             select category</select>} </li>
             <button onClick={()=>{setIsOpenComments(!isOpenComments)}}><AiOutlineComment /></button>
-            {isOpenComments&&<h4>here will be comments</h4>}
+            {isOpenComments&&<div>
+                {comments.map((curr, i) => (
+                    curr.secCommentId === "-1" ?
+                        <Comment key={i} Comment={props.postItem.comments} userName={props.userName} postId={props.postItem.postID} commentItems={curr} />
+                        : null
+                ))
+                }
+                <input type="text" placeholder="Add comment" value={desc} onChange={event => setDesc(event.target.value)} />
+                <button onClick={() => { SendComment() }}>send </button>
+
+                </div>}
             <button onClick={()=>{setIsOpenInfo(!isOpenInfo)}}><MdOutlineExpandMore /></button>
             {isOpenInfo&&
             <div className='categoryInfo'>
@@ -281,22 +333,100 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
             }
         </ul>
         {isEditing&&<button onClick={()=>{savePost()}}>save</button>}
-        <button onClick={()=>{setIsOpen(!isOpen)}} onBlur={()=>{searchForTrips(props.userName)}}>add to my trip</button>
-        
+        {props.userName===getUser().userName&&<button onClick={()=>{deletePost(props)}}>delete</button>}
+        {props.userName===getUser().userName&&<button onClick={()=>{setIsEditing(!isEditing)}}>edit</button>}
+        {/* <button onClick={()=>{setIsOpen(!isOpen)}} onBlur={()=>{searchForTrips(props.userName)}}>add to my trip</button> */}
+        <button onClick={()=>{searchForTrips(props.userName)}} >add to my trip</button>
+
     </div>)
 }
 
+function TripName(props:{trip:{tripId:number,Name: string,planner:string,days:number,posts:Array<any>,members:Array<string>,equipmentList:Array<any>},postItem:{name:String,location:String,imgUrl:String,description:String,category:String}}){
+    function addPostToTrip() {
+        const url="http://127.0.0.1:5435/trips/"+localStorage.getItem('userNameLogged')+'/'+props.trip.tripId
+        axios.put(url,props.postItem)
+            .then(response => {
+                console.log(response.data);
+                alert('the post added to your trip')
+            });    }
+    return(
+        <div>
+            <button onClick={()=>{addPostToTrip()}}>{props.trip.Name}</button>
+        </div>
+    )
+}
+function Comment(props: { userName: string, postId: number, Comment: Array<any>, commentItems: { userName: string, content: string, commentId: string, secCommentId: string } }) {
+    const url = 'http://127.0.0.1:5435/posts/DeleteComment/' + props.userName + '/' + props.postId + '/' + props.commentItems.commentId;
+    const [isOpen, setisOpen] = useState(false);
+    let [comments, setcomments] = useState(props.Comment);
+    const [desc, setDesc] = useState('');
+    let url2 = 'http://127.0.0.1:5435/posts/AddComment/' + props.userName + '/' + props.postId
 
 
 
-async function  searchForTrips(userName: string) {
-    const url="http://127.0.0.1:5435/trips/allTrips/"+userName
-   await axios.get(url)
-        .then(response => {
-            console.log(response.data);
-        });
-    
+    const handleDelete = () => {
+
+        axios.delete(url)
+
+            .then(response => {
+                console.log(response.data);
+
+            });
     }
+
+    const SendComment = () => {
+        const comment = {
+            nickname: getUser().userName,
+            content: desc,
+            commentId: JSON.stringify(props.Comment.length + 1),
+            secCommentId: props.commentItems.commentId
+        }
+
+        axios.put(url2, {
+            comment
+        })
+            .then(response => {
+                console.log(response.data);
+                comments.push(comment);
+                setcomments(comments);
+                setDesc("")
+            });
+    }
+
+
+    return (
+        <div>
+            <span >
+                {props.commentItems.userName}
+
+            </span>
+            <input defaultValue={props.commentItems.content} />
+            <span onClick={() => { setisOpen(isOpen ? false : true) }}> Reply </span>
+            {isOpen &&
+                <div>
+                    {comments.map((curr, i) => (
+                        curr.secCommentId === props.commentItems.commentId ?
+                            <div key={i}>
+                                <span> {curr.nickname}</span>
+                                <input defaultValue={curr.content} />
+                            </div>
+                            : null
+                    ))
+                    }
+                    <input type="text" placeholder="Add comment" value={desc} onChange={event => setDesc(event.target.value)} />
+                    <button onClick={() => { SendComment() }}>send </button>
+
+                </div>
+
+            }
+            <TiDelete onClick={() => { handleDelete() }} />
+
+
+        </div >
+    )
+}
+
+
 
 /////didnt try it , i need to delete all posts and add them again because i dont have postID yet
 function deletePost(props: { userName: string; postItem: { postID: Number; category: string; categoryinfo: any; comments: Array<any>; description: string; imgUrl: string; likes: Array<any>; location: string; name: string; }; }) {
@@ -305,4 +435,6 @@ function deletePost(props: { userName: string; postItem: { postID: Number; categ
         .then(response2 => {
             console.log(response2.data);})
 }
+
+
 

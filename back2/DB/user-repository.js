@@ -22,9 +22,6 @@ exports.checkUsernameAndPassword = checkUsernameAndPassword;
    
 const findUserByUsername = async (username) => {
     const x = await allUsers.findOne({ userName: username })
-    // console.log("----");
-    console.log(x);
-    // console.log("*****");
     return x;
    };
 exports.findUserByUsername = findUserByUsername;
@@ -32,14 +29,12 @@ exports.findUserByUsername = findUserByUsername;
 const addUser = async (newuser) => {
     const theNewUser = new allUsers(newuser);
     const x = await theNewUser.save();
-    console.log(`addNewUser ${JSON.stringify(x)}`);
     return true;
    };
 exports.addUser = addUser;
 
 const deleteUserByUsername = async (username) => {
     const x = await allUsers.deleteOne({ userName: username });
-    console.log(`deleteuserbyusername ${JSON.stringify(x)}`);
     return true;
    };
 exports.deleteUserByUsername = deleteUserByUsername;

@@ -45,8 +45,7 @@ export function Signin() {
                     console.log(response1.data);
                     localStorage.setItem("token",response1.data.token)
                     localStorage.setItem("userNameLogged",users.userName)
-                    localStorage.setItem("firstNameLogged",users.firstName)
-                    localStorage.setItem("lastNameLogged",users.lastName)
+
 
                     setToken(response1.data.token)
                     setUser(users);
@@ -58,8 +57,7 @@ export function Signin() {
         }
     if(localStorage.getItem('userNameLogged')!=""){
         localStorage.setItem("userNameLogged","")
-        localStorage.setItem("firstNameLogged","")
-        localStorage.setItem("lastNameLogged","")        
+      
         return(<Navigate to="/login"/>)
     }
     else{

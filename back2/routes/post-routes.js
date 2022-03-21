@@ -1,11 +1,9 @@
 const router = require("express").Router();
-const Post = require("../DB/models/post").Posts;
 const User = require("../DB/models/user").Users;
 
 //create a post 
 
 router.put("/:username", async (req, res) => {
-  console.log("part1",req.body);
   await User.updateOne({ userName: req.params.username }, { $push: { posts: req.body } });
   res.json("the post has been updated");
 
@@ -50,20 +48,17 @@ router.delete("/deletePost/:id/:userName", async (req, res) => {
 
 ////////////////////////////////////////////comment////////////////////////////////////////////////
 //Add comment 
-router.put("/AddComment/:postId/:userId", async (req, res) => {
-  const id = parseInt(req.params.id)
-
-  await User.updateOne({ userName: req.params.userName, posts: { $elemMatch: { postID: id } } }, { $push: { "posts.$.comment": req.body } })
-
+router.put("/AddComment/:userName/:postId", async (req, res) => {
+  const id = parseInt(req.params.postId)
+  console.log(req.body,req.params);
+  await User.updateOne({ userName: req.params.userName, posts: { $elemMatch: { postID: id } } }, { $push: { "posts.$.comments": req.body.comment } })
   res.send("your comment is added ")
 })
 
 //delete comment 
 router.delete("/DeleteComment/:userId/:postId/:commentId", async (req, res) => {
-  const id = parseInt(req.params.id)
-
-  await user.updateOne({userName: req.params.userName, posts: { $elemMatch: { postID: id} } }, { $pull: { "posts.$.comment": { commentId: { $eq: req.params.commentId } } } })
-
+  const id = parseInt(req.params.postId)
+  await User.updateOne({ userNmae: req.params.userId, posts: { $elemMatch: { postID: id } } }, { $pull: { "posts.$.comments": { $or: [{ commentId: { $eq: req.params.commentId } }, { secCommentId: { $eq: req.params.commentId } }] } } })
   res.send("your comment is deleted")
 })
 

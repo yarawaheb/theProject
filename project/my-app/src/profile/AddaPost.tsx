@@ -99,7 +99,7 @@ export function AddPost() {
     <div className="share">
       <form id="personalinfor" onSubmit={(e) => { sharePost(e) }}>          
         <div className='uploadPhotoBtn'>
-        <button className='uploadbtn' >upload a photo</button>
+        <input className='uploadbtn' type="file"/>
         </div>
         <div className="place">
         <div className='placeName'>

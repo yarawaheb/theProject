@@ -13,7 +13,10 @@
     border: none;
     border-bottom: 1px solid gray;
   }
-  
+  .addIcon{
+    margin-left:-20px
+    
+  }
   .chatBox {
     flex: 5.5;
   }

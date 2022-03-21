@@ -15,6 +15,15 @@ export function setprofileUser(uname:string){
 export function getprofileUser(){
     return profileUser;
 }
+
+export let tripToPlan=0;
+export function settripToPlan(tripID:number){
+    tripToPlan=tripID;
+}
+export function gettripToPlan(){
+    return tripToPlan;
+}
+
 export function setUser(user:{firstName:string, lastName: string, userName: string ,password:string,_id:string,followings:string[],profilePicture:string,followers:string[],posts:any[],chats:any[],trips:any[],equipmentList:any[]}){
     newUser.firstName=user.firstName;
     newUser.lastName=user.lastName;

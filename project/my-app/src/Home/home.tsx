@@ -1,5 +1,5 @@
-import { Attractions,  Camping, Hiking,  Mooto } from "./homeHelper";
-import { bestOfAttraction, bestOfCamping, bestOfHiking,  motto } from "./homeArr";
+import {  Mooto } from "./homeHelper";
+import {   motto } from "./homeArr";
 
 import './home.css'
 import axios from "axios";
@@ -10,14 +10,6 @@ export function Home(){
     return(
         <div  className='HomePage' >
             <Mooto mottoAtr={motto}/>
-            {/* <div className='bestOf'>
-                <label htmlFor="">Best of Hiking </label>
-                <Hiking Images={bestOfHiking}/>
-                <label htmlFor="">Best of Camping</label>
-                <Camping Images={bestOfCamping}/>
-                <label htmlFor="">Best of Attractions</label>
-                <Attractions Images={bestOfAttraction}/>
-            </div> */}
             <Feed/>
         </div>
     )}

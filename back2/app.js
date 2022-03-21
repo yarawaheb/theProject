@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-app.use(cors({origin: "http://localhost:3000", optionsSuccessStatus:200}));
+app.use(cors({origin: "*", optionsSuccessStatus:200}));
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -24,9 +24,8 @@ app.use('/users', require('./routes/users-routes'));
 app.use('/posts', require('./routes/post-routes'));
 app.use('/trips', require('./routes/trip-routes'));
 app.use('/auth', require('./routes/auth'));
+app.use('/chat',require( './routes/chat'));
 
-app.use("/conversations", require('./routes/conversations') );
-app.use("/messages", require('./routes/messages'));
 
 //////////////////////////////////////////
 const multer = require('multer')

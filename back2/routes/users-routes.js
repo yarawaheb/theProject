@@ -4,9 +4,18 @@ const router = express.Router();
 const jwt = require('jsonwebtoken')
 const User = require("../DB/models/user").Users;
 
-router.get("/all", (req, res) => {
-    res.send(myRepository.getall(req.params.all));
+router.get("/all", async(req, res) => {
+    const result=await User.find({}, { userName:1,_id:0 });
+    res.json(result);
 });
+
+//get all followers and followings
+router.get("/followersAndFollowings/:username", async (req, res) => {
+    const result=await User.find({ userName: req.params.username }, { followers:1,followings:1,_id:0 });
+    res.json(result);
+  
+  });
+
 //follow a user
 router.put("/follow/:username", async (req, res) => {
     await User.updateOne({ userName: req.params.username }, { $push: { followers: req.body.username } });
@@ -54,16 +63,10 @@ router.get('/isUserAuth',verifyJWT, (req,res)=>{
 })
 
 router.get("/", (req, res) => {
-    let results = [];
     let username = req.query.userName;
-    console.log(username);
-
     if (username !== undefined) {
-        console.log("hi0");
         results = myRepository.findUserByUsername(username)
-        
         results.then(response =>{
-            console.log("1111",response);
             res.send(response);
         })
     }
@@ -72,14 +75,9 @@ router.get("/", (req, res) => {
 
 router.get("/username", (req, res) => {
     let username = req.query[0];
-    console.log(username);
-
     if (username !== undefined) {
-        console.log("hi0");
         results = myRepository.findUserByUsername(username)
-        
         results.then(response =>{
-            console.log("1111",response);
             res.send(response);
         })
     }
@@ -100,7 +98,6 @@ router.post("/", (req, res) => {
 router.put("/:id", (req, res ) => {
     let result = myRepository.updateUserByUsername(req.body)
     result.then(response =>{
-        console.log("the res",response);
         if (response === true) {
             res.send("updated the user")
         }
@@ -124,24 +121,5 @@ router.delete("/:id", (req, res) => {
     }
 });
 
-//get friends
-router.get("/friends/:userId", async (req, res) => {
-    try {
-      const user = await User.findById(req.params.userId);
-      const friends = await Promise.all(
-        user.followings.map((friendId) => {
-          return User.findById(friendId);
-        })
-      );
-      let friendList = [];
-      friends.map((friend) => {
-        const { _id, username, profilePicture } = friend;
-        friendList.push({ _id, username, profilePicture });
-      });
-      res.status(200).json(friendList)
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  });
 
 module.exports = router;

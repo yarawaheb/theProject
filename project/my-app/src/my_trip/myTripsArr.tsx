@@ -4,7 +4,7 @@ export let MyTripsActions = [
     {
         Icon: <MdCardTravel className="homeicon"></MdCardTravel>,
         title: "My trips",
-        url: "myTrips"
+        url: "allTrips"
     },
  
     {
