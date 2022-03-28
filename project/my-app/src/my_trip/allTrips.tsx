@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
+
 export default function AllTrips() {
     const username=localStorage.getItem('userNameLogged');
     let [fetching,setFetch] = useState(true);
@@ -54,16 +55,26 @@ function TripCard(props:{trip:{tripId:number,Name: string,planner:string,days:nu
 }
 
 function Trip(props:{trip:{tripId:number,Name: string,planner:string,days:number,posts:Array<any>,members:Array<string>,equipmentList:Array<any>}}){
-    
+    let arr=[]
+    for (let i = 0; i < props.trip.days; i++) {
+        arr[i] = i;
+        
+    }
     let [posts,setPosts]=useState(props.trip.posts)
     return(
         <div>
            {props.trip.Name}
            {posts.map((curr,i)=>{
-               <div key={i}>
-                  return <PostCard postItem={curr}/>
+               return <div key={i}>
+                <ul>
+                    <li> {curr.name}</li>
+                </ul>
                </div>
            })}
+           {console.log(props.trip.days)}
+            <ul>{arr.map((e, i) => {
+                return <li key={i}>day {e+1}</li>
+            })}</ul>
         </div>
     )
 }
@@ -72,6 +83,7 @@ function PostCard(props:{postItem:{postID:number,category:string,categoryinfo:an
     return(
         <div>
             {props.postItem.name}
+            {console.log(props.postItem.name)}
             <h1>hi</h1>
         </div>
     )

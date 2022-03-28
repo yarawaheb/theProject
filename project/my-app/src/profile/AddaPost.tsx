@@ -69,8 +69,8 @@ export function AddPost() {
     if(whichField==='category'){
     setcatInfo(e.target.value);
       console.log(categoryIsSet);
-      
     }
+    
     let newObj = {...postInfo,...{[whichField]: e.target.value}};        
     setPostInfo(newObj);
     console.log(postInfo);
@@ -99,7 +99,8 @@ export function AddPost() {
     <div className="share">
       <form id="personalinfor" onSubmit={(e) => { sharePost(e) }}>          
         <div className='uploadPhotoBtn'>
-        <input className='uploadbtn' type="file"/>
+        <input onChange={(e:React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e,"imgUrl")}} 
+        className='uploadbtn' type="file" id="imgUrl" name="imgUrl"/>
         </div>
         <div className="place">
         <div className='placeName'>

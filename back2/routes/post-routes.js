@@ -62,5 +62,20 @@ router.delete("/DeleteComment/:userId/:postId/:commentId", async (req, res) => {
   res.send("your comment is deleted")
 })
 
+/////////////////////////////////////////////LIKE/////////////////////////////////
 
+//Add like 
+router.put("/AddLike/:userName/:postId", async (req, res) => {
+  const id = parseInt(req.params.postId)
+  console.log(req.body,req.params);
+  await User.updateOne({ userName: req.params.userName, posts: { $elemMatch: { postID: id } } }, { $push: { "posts.$.likes": req.body.user } })
+  res.send("you liked the post ")
+})
+
+//delete like 
+router.delete("/RemoveLike/:userName/:postId/:user", async (req, res) => {
+  const id = parseInt(req.params.postId)
+  await User.updateOne({ userNmae: req.params.userName, posts: { $elemMatch: { postID: id } } }, { $pull: { "posts.$.likes": req.params.user }})
+  res.send("you dislike the post")
+})
 module.exports = router;

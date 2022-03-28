@@ -1,4 +1,5 @@
 import axios from 'axios';
+import "./feed.css";
 import { createContext, useEffect, useState } from 'react';
 import { MdOutlineExpandMore } from 'react-icons/md';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -8,6 +9,7 @@ import { getUser, setprofileUser } from '../configStore';
 import { response } from 'express';
 import { AiOutlineComment } from 'react-icons/ai';
 import { TiDelete } from 'react-icons/ti';
+import { BsSuitHeart, BsSuitHeartFill } from 'react-icons/bs';
 
 
 export function Feed() {
@@ -44,15 +46,13 @@ export function Feed() {
                         
                     }
                 }
-                console.log(response.data[0].posts,time);
-                console.log(postArr);
+
                 setPosts(postArr);
                 setUsername(usernameArr)
                 setFetch(false);
             });
     },[]);
     const time =new Date().getTime();
-    console.log(Posts,time);
     
     return fetching ?(<>loadong...</>):(
         <div>
@@ -82,10 +82,11 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
     let [isOpenComments,setIsOpenComments]=useState(false)
     const [desc, setDesc] = useState('');
     let [TripsAreHere,setTripsAreHere]=useState(false)
+    let [IsLike,setIsLike]=useState(props.postItem.likes.includes(getUser().userName)?true:false)
     let [comments, setcomments] = useState(props.postItem.comments);
+    let [likes, setLikes] = useState(props.postItem.likes);
     let [Trips,setTrips]=useState([{tripId:0,Name: "",planner:"",days:0,posts:[{}],members:[],equipmentList:[{}]}])
     let url2 = 'http://127.0.0.1:5435/posts/AddComment/' + props.userName + '/' + props.postItem.postID
-
     useEffect(() =>  {
         if(props.postItem.category==="hiking"){
             sethikingInfo(props.postItem.categoryinfo);
@@ -96,12 +97,13 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
         if(props.postItem.category==="attraction"){
             setAttractionInfo(props.postItem.categoryinfo);
         }
+        setIsLike(props.postItem.likes.includes(getUser().userName)?true:false)
         
-    },[]);
+    },[likes]);
      let [postInfo, setPostInfo] = useState(props.postItem)
     
     function textattractionWasChanged(e: React.ChangeEvent<HTMLInputElement> |React.ChangeEvent<HTMLSelectElement>| React.ChangeEvent<HTMLTextAreaElement>,whichField: string)
-      {
+    {
         let newObj = {...AttractionInfo,...{[whichField]: e.target.value}};        
         setAttractionInfo(newObj);
     }
@@ -178,13 +180,36 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
             });
         setTripsAreHere(true)
     }
-    
-    return (<div>
-        {isOpenNewTrip && <NewTrip userName={props.userName} postItem={props.postItem} ></NewTrip>}
+    function handleLike() {
+        console.log(IsLike);
+        setIsLike(!IsLike)
+        console.log(IsLike);
         
+        if(!likes.includes(getUser().userName)){
+            let url2 = 'http://127.0.0.1:5435/posts/AddLike/' + props.userName + '/' + props.postItem.postID
+            axios.put(url2, {user:getUser().userName})
+                .then(response => {
+                    console.log(response.data);
+                    likes.push(getUser().userName);
+                    setLikes(likes);
+                    console.log(likes);
+                });
+        }
+        else{
+            let url2 = 'http://127.0.0.1:5435/posts/RemoveLike/' + props.userName + '/' + props.postItem.postID +"/"+getUser().userName
+            axios.delete(url2)
+                .then(response => {
+                    console.log(response.data);
+                    // likes.pop(getUser().userName);
+                    // setLikes(likes);
+                    console.log(likes);
+                });
+        }
+    }
+    return (<div className="post">
+        {isOpenNewTrip && <NewTrip userName={props.userName} postItem={props.postItem} ></NewTrip>}
         <div className='addmyTrips'>
             {isOpen &&Trips!==[]&&<div>
-           
            {Trips.map((curr, i) => {
            return <TripName key={i} trip={curr} postItem={props.postItem}  />
            })} 
@@ -192,12 +217,18 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
 
        
         </div>
+
         <ul>
+        
             {setprofileUser(props.userName)}
             {isuserclick&&navigate('/profileUser')}
-            <li>username: <button  onClick={()=>{setuserclick(!isuserclick)}}>{props.userName} </button> </li>
-            <li> <img src={props.postItem.imgUrl} alt=""  /> </li>
-            <li>name: {!isEditing ? props.postItem.name : <input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "name")}}
+            <div className="postTop">
+          <div className="postTopLeft">
+            <li className="postUsername"><span  onClick={()=>{setuserclick(!isuserclick)}}>{props.userName} </span> </li>
+            <div className="postCenter">
+            <li> <img className="postImg" src={props.postItem.imgUrl} alt=""  /> </li>
+            </div></div></div>
+            <li >name: {!isEditing ? props.postItem.name : <input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "name")}}
             type="text"  id="name" name="name" defaultValue={props.postItem.name} /> } </li>
             <li>location: {!isEditing ? <a href={props.postItem.location}>{props.postItem.name}</a> :<input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "location")}}
             type="text"  id="location" name="location"  defaultValue={props.postItem.location} /> } </li>
@@ -211,7 +242,8 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
               <option value="camping">Camping</option>
               <option value="attraction">Attraction</option>
             select category</select>} </li>
-            <button onClick={()=>{setIsOpenComments(!isOpenComments)}}><AiOutlineComment /></button>
+            {IsLike?<BsSuitHeartFill onClick={()=>{handleLike()}} color='RED'></BsSuitHeartFill>:<BsSuitHeart onClick={()=>{handleLike()}}></BsSuitHeart>}
+            <AiOutlineComment onClick={()=>{setIsOpenComments(!isOpenComments)}}/>
             {isOpenComments&&<div>
                 {comments.map((curr, i) => (
                     curr.secCommentId === "-1" ?
@@ -223,7 +255,7 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
                 <button onClick={() => { SendComment() }}>send </button>
 
                 </div>}
-            <button onClick={()=>{setIsOpenInfo(!isOpenInfo)}}><MdOutlineExpandMore /></button>
+            <MdOutlineExpandMore onClick={()=>{setIsOpenInfo(!isOpenInfo)}}/>
             {isOpenInfo&&
             <div className='categoryInfo'>
                 <div className='camping_info'>
@@ -435,6 +467,8 @@ function deletePost(props: { userName: string; postItem: { postID: Number; categ
         .then(response2 => {
             console.log(response2.data);})
 }
+
+
 
 
 

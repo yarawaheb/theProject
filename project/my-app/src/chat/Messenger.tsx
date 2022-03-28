@@ -16,7 +16,7 @@ export default function Messenger() {
   const [currentChat, setCurrentChat] = useState({chatID:"",members:[""],messages:[{}]});
   const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState({msg:{content:"",messageID:"",time:new Date()},sender:""});
-  const [onlineUsers, setOnlineUsers] = useState([]); 
+  const [onlineUsers, setOnlineUsers] = useState([""]); 
   const socket = useRef(io());
   const scrollRef = useRef<HTMLDivElement>(null);
   const user = getUser().userName
@@ -110,9 +110,18 @@ export default function Messenger() {
   useEffect(() => {
     socket.current.emit("addUser", getUser()._id);
     socket.current.on("getUsers", (users) => {
-      // setOnlineUsers(
-      //   getUser().followings.filter((f) => users.some((u) => u.userId === f))
-      // );
+      console.log(users);
+      console.log(getUser().followings);
+      
+      const arr=[]
+      let j=0
+      for (let i = 0; i < users.length; i++) {
+        if(getUser().followings.includes(users[i].userId)){
+          arr[j]=users[i].userId
+          j++
+        }
+      }
+      setOnlineUsers(arr)
     });
   }, [user]);
 
@@ -225,7 +234,7 @@ export default function Messenger() {
             </ul>
             {conversations.map((c, i) => (
               // <div key={i} onClick={() => setCurrentChat(c)}>
-              <div key={i} onClick={() => setChat(c)}>
+              <div  key={i} onClick={() => setChat(c)}>
                 <Conversation key={i} conversation={c} currentUser={user} />
               </div>
             ))}
@@ -263,13 +272,12 @@ export default function Messenger() {
             )}
           </div>
         </div>
+        {onlineUsers[0]!==""&&
         <div className="chatOnline">
           <div className="chatOnlineWrapper">
-            <ChatOnline
-
-            />
+            <ChatOnline onlineUsers={onlineUsers}/>
           </div>
-        </div>
+        </div>}
       </div>
     </>
   );

@@ -23,7 +23,6 @@ import { Connections } from './profile/Connection';
 import NewTrip from './my_trip/newTrip';
 import { ProfileUser } from './Home/profileUser';
 import AllTrips from './my_trip/allTrips';
-import JoinTrip from './joinTrip/joinTrip';
 //import { AuthContext } from "./context/AuthContext";
 
 function App() {
@@ -45,7 +44,6 @@ function App() {
           <Route path="login" element={<Signin/>} />
           <Route path="inbox" element={<Messenger/>}/>
           <Route path="createAccount" element={<CreateAccount/>} />
-          <Route path="joinATrip" element={<JoinTrip/>} />
           <Route path="myTrips" element={<MyTrip/>}>
             <Route path="allTrips" element={<AllTrips/>}/>
             <Route path="equipmentList" element={<EquipmentList/>}/>
