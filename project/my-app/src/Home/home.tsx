@@ -5,17 +5,36 @@ import './home.css'
 import axios from "axios";
 import { getToken } from "../configStore";
 import { Feed } from "../profile/Feed";
+import UserNotLogin from './../UserNotLogin';
+import { getUser } from './../configStore';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { FaUserFriends } from "react-icons/fa";
 export function Home(){
-   if(localStorage.getItem("token")!==""){
-    return(
+    let [fetching,setFetch] = useState(true);
+    let[user,setUser]=useState({userName:"",profilePicture:"",followers:[""]})
+    useEffect(()=>{
+        setUser(getUser())
+        setFetch(false);
+
+    },[user])
+   if(localStorage.getItem('userNameLogged')!==''){
+    return fetching ?(<><img className='loading' src="./images/loading.gif" alt="" /></>):(
         <div  className='HomePage' >
-            <Mooto mottoAtr={motto}/>
+            <div className="userLOGGEDInfo">
+                <ul className="userLOGGEDInfoUL">
+                    <li><img className="ProfileImg" src={user.profilePicture} alt="" /></li>
+                    <li className="userLOGGEDInfoSPAN"><span >{user.userName}</span></li>
+                </ul>
+                <span className="followerss"><FaUserFriends/> {user.followers.length}  followers </span>
+            </div>
+            {/* <Mooto mottoAtr={motto}/> */}
             <Feed/>
         </div>
     )}
     else{
         return(
-            <h1>please login first</h1>
+            <UserNotLogin/>
         )
     }
 }

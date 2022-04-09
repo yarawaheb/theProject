@@ -3,11 +3,11 @@ import { BrowserRouter,Routes , Route,Navigate } from 'react-router-dom';
 import './App.css';
 import { BiuldTrip } from './biuld_trip/BiuldTrip';
 import {  Footer1 } from './footer/Footer';
-import { ActionsArr, footerArr } from './footer/FooterItems';
+import {  footerArr } from './footer/FooterItems';
 
 import { Home } from './Home/home';
 import { MyTrip } from './my_trip/myTrips';
-import { Navbar1 } from './navBar/navBar';
+import { Navbar1, SideBar } from './navBar/navBar';
 import { navArr } from './navBar/navItems';
 import { Personalinfo } from './profile/PersonalInfo';
 import {Profile} from './profile/Profile';
@@ -23,27 +23,26 @@ import { Connections } from './profile/Connection';
 import NewTrip from './my_trip/newTrip';
 import { ProfileUser } from './Home/profileUser';
 import AllTrips from './my_trip/allTrips';
+import JoinTrip from './joinTrip/joinTrip';
 //import { AuthContext } from "./context/AuthContext";
 
 function App() {
-  //const { user } = useContext(AuthContext);
-  
-  const user=localStorage.getItem('userNameLogged');
-  
-  
   return (
     <div className="bg">
       
         {/* <Signin/> */}
        
       <Navbar1 navItems={navArr} logoImageUrl={"./images/logo.png"}  />
+      <SideBar navItems={navArr}  />
+
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={user ? <Home /> : <Signin/>} />
-          <Route path="home" element={user ? <Home /> : <Signin/>} />
+          <Route path="/" element={<Home />} />
+          <Route path="home" element={ <Home /> } />
           <Route path="login" element={<Signin/>} />
           <Route path="inbox" element={<Messenger/>}/>
           <Route path="createAccount" element={<CreateAccount/>} />
+          <Route path="joinATrip" element={<JoinTrip/>} />
           <Route path="myTrips" element={<MyTrip/>}>
             <Route path="allTrips" element={<AllTrips/>}/>
             <Route path="equipmentList" element={<EquipmentList/>}/>
@@ -58,7 +57,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-      <Footer1 actionsArr={ActionsArr} footerItems={footerArr} />
+      <Footer1  footerItems={footerArr} />
        
     </div>
   );

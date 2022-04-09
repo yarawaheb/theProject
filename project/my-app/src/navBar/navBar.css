@@ -17,7 +17,7 @@
 
 .Navbar1 .pagesItemsUl li{
    list-style: none;
-   margin-left: 30px;
+   margin-left: 200px;
    display: flex;
    
 }
@@ -28,6 +28,7 @@
     
     
  }
+
 
 .homeicon{
     height: 70px;
@@ -57,21 +58,17 @@
 .Logo-trip{
     height: 80px;
     width: 90px;
-    margin-right: 70px;
+    margin-right: 140px;
     margin-top: 8px;
 }
-.searchInput{
-    height: 25px;
-    width: 400px;
-    display: flex;
-    justify-content:space-between;
-    margin-left: 150px;
-    margin-top: 20px;
-    background-color: rgb(255, 255, 255);
-    border-radius: 8px;
-    margin-right: 100px;
+.motto{
+    margin-top: 10px;
+    padding-bottom: 10px;
     text-align: center;
-
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-size: 30px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 .Notifications {
     width: 15px;
@@ -101,3 +98,23 @@
     justify-content: center;
     font-size: 12px;
   }
+  .searchItems{
+    margin-top: 30px;
+}
+  .sideBar{
+      position: fixed;
+      margin-left: 85%;
+  }
+  .sideItem{
+      border-bottom: double;
+      margin-bottom: 12px;
+      width: 120px;
+      align-items: center;
+      justify-content: center;
+  }
+.sideItem a{
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: #000;
+}

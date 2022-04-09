@@ -1,0 +1,16 @@
+
+.followersAndFollowingsList{
+    justify-content: space-between;
+    display: flex;
+    background-color: rgb(245, 253, 255);
+
+}
+.followersList{
+    justify-content: space-between;
+
+}
+.followingsList{
+    justify-content: space-between;
+    margin-right: -300px;
+
+}

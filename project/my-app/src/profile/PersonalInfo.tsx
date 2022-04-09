@@ -68,7 +68,7 @@ export function Personalinfo(props: { newUser: any}) {
                     type="text"  id="userName" name="userName"  disabled={true} defaultValue={getUser().userName}/>
                 </div>
                 <div className='ipasswordField'>
-                    <label htmlFor="">new password</label>
+                    <label htmlFor="">New password</label>
                     <input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "password")}}
                     type="text" id="password" name="password"  />
                 </div>                

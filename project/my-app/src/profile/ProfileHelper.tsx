@@ -6,7 +6,7 @@ export default function ProfileHelper(props: {profileactionsArr:{Icon:JSX.Elemen
    return (
    <div className="pactions">
     {props.profileactionsArr.map((curr,i) =>(
-        <li key={i}><button className={curr.url} onClick={() => {navigate(curr.url)}}>
+        <li key={i}><button className='proact' onClick={() => {navigate(curr.url)}}>
              
              <div className="picons">{curr.Icon}</div>
              <div>{curr.title}</div>

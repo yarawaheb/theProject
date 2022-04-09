@@ -6,9 +6,11 @@ import { FormEvent, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { getUser } from '../configStore';
+import { useEffect } from 'react';
 
 export function AddPost() {
   const navigate = useNavigate()
+  let [fetching,setFetch] = useState(true);
   let [postInfo, setPostInfo] = useState({
     postID:getUser().posts.length+1,
     imgUrl: "", 
@@ -76,6 +78,9 @@ export function AddPost() {
     console.log(postInfo);
       
   }
+  useEffect(()=>{
+    setFetch(!fetching)
+  },[])
   function sharePost(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if(categoryIsSet==='hiking'){
@@ -94,8 +99,8 @@ export function AddPost() {
         navigate('/profile/myProfile')
     })
   }
-    
-  return (
+  return fetching ?(<><img className='loading' src="./images/loading.gif" alt="" /></>):(
+  
     <div className="share">
       <form id="personalinfor" onSubmit={(e) => { sharePost(e) }}>          
         <div className='uploadPhotoBtn'>

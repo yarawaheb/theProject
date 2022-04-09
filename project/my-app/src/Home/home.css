@@ -1,35 +1,35 @@
-
-.motto{
-
-    max-width: 40%;
-    text-align: center;
-    margin: auto;
+.userLOGGEDInfo{
+    display: block;
+    background-color: rgb(80, 121, 121);
+    max-width: 210px;
+    height: 100px;
+    margin-left: 20px;
+    border-radius: 10px;
 }
-
-.motto  h1{
-    color: rgb(84, 89, 109);
-    font-style:normal;
-    font-size:xx-large;
-    text-shadow: 0 1px  rgb(12, 0, 44);
+.userLOGGEDInfoUL{
+    display: flex;
+    justify-content: space-around;
 }
-label{
-    margin-left: 50px;
-    text-shadow: rgb(211, 152, 64);
-    font-family: fantasy;
-    font-size: xx-large;
-    margin-bottom: 200px;
-    
+.ProfileImg{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: -11px;
+    margin-left: -35px;
 }
-.bestOf{
-    background-color: rgb(247, 245, 240);
-    padding-top: 50px;
-    padding-bottom: 50px;
-    margin: auto;
-   
-} 
-
-    
-    
-    
+.userLOGGEDInfoSPAN{
+    margin-top:15px ;
+    color: rgb(255, 255, 255);
+    font-size: large;
+}
+.followerss{
+    color: white;
+    margin-left: 95px;
+    margin-top: 10px;
+}
+.followerssItem{
+    display: flex;
+}
     
 

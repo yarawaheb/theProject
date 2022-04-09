@@ -1,12 +1,14 @@
   .mainContainer {
-    background-color: #cdd7f3;
+    background-color: #351d0088;
     font-size: 26px;
     width: 500px;
     height: min-content;
     border-radius: 5px;
     padding: 20px;
     margin:auto;
-    margin-top: 20px;
+    margin-top: 50px;
+    align-items: center;
+    margin-left: 200px;
     box-shadow: 10px 10px 26px 0px rgba(0, 0, 0, 0.35);
   }
   
@@ -15,8 +17,8 @@
   }
   
   .mainContainer .add-item-box {
-    background: #a2bbfd;
-    color: #192ea3;
+    background: #746a559e;
+    color: #423015;
     margin-top: 1em;
     margin-bottom: 1em;
     display: flex;
@@ -33,13 +35,15 @@
     box-sizing: border-box;
     border: none;
     background: transparent;
-    color: #192ea3;
+    color: #53472e;
+    font-weight: bold;
+    font-size: 20px;
     width: 100%;
     height: 30px;
   }
   
  .mainContainer input::placeholder {
-    color: #192ea3;
+    color: #382f19;
   }
  .mainContainer input:focus {
     outline: 0;
@@ -60,6 +64,7 @@
   
  .mainContainer .item-name {
     cursor: pointer;
+    font-size: 20px;
   }
   
  .mainContainer .item-name svg {
@@ -86,12 +91,12 @@
  .mainContainer .quantity {
     display: flex;
     align-items: center;
-    border: 1px solid #192ea3;
+    border: 1px solid #6d613b;
     background: white;
     border-radius: 50px;
-    font-size: 12px;
-    color: #192ea3;
-    min-width: 70px;
+    font-size: 16px;
+    color: #483819;
+    width: 130px;
     justify-content: space-between;
   }
   
@@ -99,7 +104,7 @@
     background: transparent;
     border: none;
     margin: 3px;
-    color: #192ea3;
+    color: #6d613b;
   }
  .mainContainer button:focus {
     outline: 0;

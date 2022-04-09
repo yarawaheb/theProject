@@ -28,9 +28,10 @@ router.put("/:username", async (req, res) => {
   });
 
   //add post to a trip 
-router.put("/:username/:tripID", async (req, res) => {
+router.put("/addTo/:username/:tripID", async (req, res) => {
   try {
     const tripID = parseInt(req.params.tripID)
+    console.log(req.params);
     const trip = await User.updateOne({ userName: req.params.username, trips: { $elemMatch: { tripId: tripID } } }, { $push:{"trips.$.posts": req.body } })
       res.status(200).json(trip);
   } catch (err) {

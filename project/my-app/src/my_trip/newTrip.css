@@ -1,0 +1,9 @@
+.newTripForm{
+    height: 150px;
+    width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('C:\Users\Yara Waheb\OneDrive\שולחן העבודה\lotus\theProject\project\my-app\public\images\globe.jpg');
+    background-size: cover;
+}

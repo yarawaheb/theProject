@@ -8,3 +8,8 @@
     background-size: cover;
   
   } */
+  .loading{
+    align-items: center;
+    margin: auto;
+    display: flex;
+  }

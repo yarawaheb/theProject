@@ -1,0 +1,99 @@
+.dayBlock{
+    display: block;
+    height: 170px;
+    width: 170px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    background-color: antiquewhite;
+    display: flex;
+    justify-content: space-evenly;
+    font-weight: bold;
+}
+.daysUL{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-right: 50px;
+}
+.dragSentence{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    color: rgba(104, 67, 32, 0.925);
+    font-weight: bold;
+}
+.tripCards{
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+}
+.tripCard{
+    margin: auto;
+
+    height: 500px;
+    width: 800px;
+    margin-left: 10%;
+    margin-top: 10%;
+    background-image: url('C:\Users\Yara Waheb\OneDrive\שולחן העבודה\lotus\theProject\project\my-app\public\images\mapCover.jpg');
+    background-size: cover;
+
+}
+.noTripToPlan{
+
+    height: 280px;
+    width: 340px;
+    margin-left: 175%;
+    margin-top: 10%;
+    background-image: url('C:\Users\Yara Waheb\OneDrive\שולחן העבודה\lotus\theProject\project\my-app\public\images\mapCover.jpg');
+}
+.tripCardName{
+    font-size: 25px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bold;
+    text-shadow: 2px 2px 3px rgba(105, 47, 26, 0.667);
+
+}
+.tripCardUL{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.noTripToPlanUL{
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+    margin-right: 30px;
+    margin-top: 30px;
+    text-shadow: 2px 2px 3px rgba(37, 19, 13, 0.308);
+    background-color: rgba(255, 255, 255, 0.537);
+}
+.noTripToPlanUL li{
+    margin-bottom:14px ;
+    font-size: 20px;
+}
+.tripPlanner{
+    background-color: rgba(255, 255, 255, 0.548);
+    padding-top: 10px;
+}
+.placeNameToDrag{
+
+    background-color: rgba(74, 49, 18, 0.817);
+    color: white;
+    border-radius: 6px;
+}
+.placesDiv{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 20px;
+}
+.planYourTripBtn{
+    background-color: rgba(35, 27, 6, 0.434);
+    color: white;
+    cursor: pointer;
+    box-shadow: 2px 2px 3px rgba(74, 49, 18, 0.817);   
+    border-radius: 4px; 
+}

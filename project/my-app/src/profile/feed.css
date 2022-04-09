@@ -3,7 +3,7 @@
     -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
     box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
     margin: 30px 0;
-    width: 50%;
+    width: 650px;
     margin-left: 25%;
   }
   .postTop {
@@ -12,10 +12,16 @@
     justify-content: space-between;
     
   }
-  
+  .postProfileImg {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
   .postTopLeft {
     margin-top: 15px;
     align-items: center;
+    display: flex;
   }
   .postUsername {
     font-size: 20px;
@@ -26,13 +32,112 @@
     color: rgb(28, 91, 143);
     cursor: pointer;
   }
+  .moreactions{
+    display: flex;
+    
+  }
+  .more{
+      float: right;
+      margin-right: 10px;
+      /* margin-left: 470px; */
+      padding-top: 11px;
+  }
+  .moreItem{
+    margin-left: 250px;
+    margin-top: 25px;
+}
+.moreItem li{
+    display: flex;
+    background-color: rgb(250, 255, 240);
+
+    }
+.moreItem:hover {
+    color: rgb(28, 91, 143);
+    cursor: pointer;
+  }
   .postCenter{
     margin: 20px 0;
 }
   .postImg{
-    width: 100%;
-    max-height: 400px;
+    max-width: 500px;
+    max-height: 500px;
     object-fit: contain;
-    margin-left: 33%;
+    margin-left: 6%;
 
+}
+.likeandcomment{
+    display: flex;
+    justify-content: space-evenly   ;
+    margin-left: 65%;
+}
+.categoryTag{
+    background-color: rgb(21, 90, 3);
+    max-width: 100px;
+    border-radius: 20%;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    margin-top: 10px;
+}
+.addToMyTrip{
+    margin-left: 37%;
+    margin-top: 2%  ;
+    margin-bottom: 5%;
+    cursor: pointer;
+    position: relative;
+    transition: 0.5s;
+    border-radius: 15px;
+    border-color: rgb(53, 184, 140);
+    background-color: white;
+}
+
+  .addToMyTrip :after {
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+  }
+  
+  .addToMyTrip:hover  {
+    padding-right: 25px;
+  }
+  
+  .addToMyTrip:hover :after {
+    opacity: 1;
+    right: 0;
+  }
+
+  .addToTrip{
+      max-width: 300px;
+      border-radius: 10px;
+      -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+      box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+      margin-left:26%;
+  }
+  .addmyTrips{
+      margin-bottom: 55px;
+  }
+  .allTrips {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: solid 1px black;
+    justify-content: center;
+    padding-top: 3px;  
+    margin-bottom: 5px;  
+}
+.postButtom{
+    align-items: center;
+    display: flex;
+    margin-left: 30px;
+}
+.sendIcon{
+    font-size: 25px;
+    cursor: pointer;
+
+}
+.categoryInfo{
+  display: flex;
+}
+.feedComment{
+  margin-left: -450px;
 }

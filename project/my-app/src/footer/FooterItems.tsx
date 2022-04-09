@@ -12,17 +12,4 @@ export let footerArr =[
     name:"Yara Waheb 2022"
 
 }];
-export let ActionsArr = [
-    {
-        Icon: <SiYourtraveldottv className="homeicon"></SiYourtraveldottv>,
-        title: "My trips",
-        url: "/myTrips"
-    },
- 
-    {
-        Icon: <MdBuild className="inboxicon"></MdBuild>,
-        title: "Join a trip",
-        url: "/joinATrip"
-    }
-    
-]
+

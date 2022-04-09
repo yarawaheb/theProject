@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useContext, useState } from 'react'
 import { useEffect } from 'react';
-
+import './newTrip.css'
 export default function NewTrip(props:{userName:string ,postItem:{name:String,location:String,imgUrl:String,description:String,category:String}}) {
     console.log(props);
     let [nextId,setNext]=useState(0);
@@ -19,8 +19,10 @@ export default function NewTrip(props:{userName:string ,postItem:{name:String,lo
         const url="http://127.0.0.1:5435/trips/allTrips/"+localStorage.getItem('userNameLogged')
         axios.get(url)
             .then(response => {
-                setNext(response.data+1);
-                console.log(response.data);
+                setNext(response.data.length+1);
+                let newObj = {...formInfo,...{["tripId"]:response.data.length+1 }};
+                setFormInfo(newObj);
+                console.log(response.data.length);
                 console.log(formInfo);
                 
             });

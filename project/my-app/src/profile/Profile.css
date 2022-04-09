@@ -7,3 +7,28 @@ button{
     font-family: monospace;
     font-size: large;
 }
+ .proact:focus  {
+    background-color: #141430;
+    color: rgb(255, 255, 255);
+}
+.userProfileImage{
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.userProfileInformation{
+    margin-top: 30px;
+}
+.userProfileUsername{
+    font-size: larger;
+    margin-left: 90px;
+    margin-top: 10px;
+    font-style: oblique;
+}
+.userProfileFollowers{
+    font-size: medium;
+    margin-left: 125px;
+    margin-top: 5px;
+    font-style: oblique;
+}

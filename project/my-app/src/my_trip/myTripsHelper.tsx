@@ -6,7 +6,7 @@ export  function MyTripsfunc(props: {myTripactionsArr:{Icon:JSX.Element, title: 
   return(
     <div className="mtactions">
     {props.myTripactionsArr.map((curr,i) =>(
-      <li key={i}><button className={curr.url} onClick={() => {navigate(curr.url)}}>
+      <li key={i}><button className='tripActionNav' onClick={() => {navigate(curr.url)}}>
            <div className="mticons">{curr.Icon}</div>
            <div>{curr.title}</div>
             </button></li>

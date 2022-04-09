@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { getUser } from '../configStore';
-
+import './connections.css'
 export  function Connections() {
     let [followers,setFollowers]=useState([])
     let [followings,setFollowings]=useState([])
@@ -22,22 +22,25 @@ export  function Connections() {
                 setFetch(false);
             });
     },[followers,followings]);
-    return fetching ?(<>loadong...</>):(
+    return /*fetching ?(<><img className='loading' src="./images/loading.gif" alt="" /></>):*/(
         <div className='followers'>
-            <ul>
-                <li>
-                    <h3>followers</h3>
+            <ul className='followersAndFollowingsList'>
+                <li className='followersList'>
+                    <ul>
+                    <li><span className='followersTitle'>followers</span></li>
                     {followers.map((curr, i) => (               
-                    <h1 key={i}>{curr}</h1>
+                   <li><span key={i}>{curr}</span></li> 
                     ))
                     }
+                    </ul>
                 </li>
-                <li>
-                    <h3>followings</h3>
+                <li className='followingsList'>
+                    <ul>
+                   <li><span className='followingsTitle'>followings</span></li> 
                     {followings.map((curr, i) => (               
-                    <h1 key={i}>{curr}</h1>
+                    <li><span key={i}>{curr}</span></li>
                     ))
-                    }
+                    }</ul>
                 </li>
             </ul>
         </div>

@@ -43,7 +43,7 @@ export  function MyProfile() {
     const time =new Date().getTime();
     console.log(Posts,time);
     
-    return fetching ?(<>loadong...</>):(
+    return fetching ?(<><img className='loading' src="./images/loading.gif" alt="" /></>):(
         <div>
            
             {Posts.map((curr, i) => {

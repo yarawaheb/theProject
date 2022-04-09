@@ -1,7 +1,7 @@
 import axios from 'axios';
 import "./feed.css";
 import { createContext, useEffect, useState } from 'react';
-import { MdOutlineExpandMore } from 'react-icons/md';
+import { MdLocationOn, MdOutlineDelete, MdOutlineExpandMore } from 'react-icons/md';
 import { Navigate, useNavigate } from 'react-router-dom';
 import NewTrip from './../my_trip/newTrip';
 import { ProfileUser } from './../Home/profileUser';
@@ -9,7 +9,11 @@ import { getUser, setprofileUser } from '../configStore';
 import { response } from 'express';
 import { AiOutlineComment } from 'react-icons/ai';
 import { TiDelete } from 'react-icons/ti';
-import { BsSuitHeart, BsSuitHeartFill } from 'react-icons/bs';
+import { BsCheck, BsReply, BsSuitHeart, BsSuitHeartFill, BsX } from 'react-icons/bs';
+import { RiDeleteBin6Line, RiMore2Fill } from 'react-icons/ri';
+import { BiEditAlt } from 'react-icons/bi';
+import {BiSend} from 'react-icons/bi'
+import { GrLocationPin } from 'react-icons/gr';
 
 
 export function Feed() {
@@ -54,7 +58,7 @@ export function Feed() {
     },[]);
     const time =new Date().getTime();
     
-    return fetching ?(<>loadong...</>):(
+    return fetching ?(<><img className='loading' src="./images/loading.gif" alt="" /></>):(
         <div>
            
             {Posts.map((curr, i) => {
@@ -71,6 +75,7 @@ export function Feed() {
 export const Post1 = (props: {userName:string , postItem: {postID:number,category:string,categoryinfo:any,comments:Array<any>,description:string, imgUrl: string,likes:Array<any>, location:string,name: string }}) => {
     
     const navigate = useNavigate()
+    let [fetching,setFetch] = useState(true);
     let [isEditing,setIsEditing]=useState(false)
     let [AttractionInfo, setAttractionInfo] = useState({postID:"",cost:0,minAge:0,maxAge:0,season:"",suitableForPregnant:false,suitableForPeopleWithDisabilities:false,suitableForGroups:false,})
     let [campingInfo, setcampingInfo] = useState({postID:"",costPerNight:0,meals:"",viewTo:"",peoplePerRoom:0,includingBath:false,includingGrill:false,includingKitchen:false})
@@ -79,12 +84,14 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
     let [isOpenInfo, setIsOpenInfo] = useState(false)
     let [isOpenNewTrip, setisOpenNewTrip] = useState(false)
     let [isuserclick, setuserclick] = useState(false)
+    let [more, setMore] = useState(false)
     let [isOpenComments,setIsOpenComments]=useState(false)
     const [desc, setDesc] = useState('');
     let [TripsAreHere,setTripsAreHere]=useState(false)
     let [IsLike,setIsLike]=useState(props.postItem.likes.includes(getUser().userName)?true:false)
     let [comments, setcomments] = useState(props.postItem.comments);
     let [likes, setLikes] = useState(props.postItem.likes);
+    let [proPic,setProPic] = useState("")////////*****/
     let [Trips,setTrips]=useState([{tripId:0,Name: "",planner:"",days:0,posts:[{}],members:[],equipmentList:[{}]}])
     let url2 = 'http://127.0.0.1:5435/posts/AddComment/' + props.userName + '/' + props.postItem.postID
     useEffect(() =>  {
@@ -101,7 +108,14 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
         
     },[likes]);
      let [postInfo, setPostInfo] = useState(props.postItem)
-    
+    useEffect(()=>{
+        axios.get("http://localhost:5435/users/username",{params:props.userName})
+    .then(response =>{
+        setProPic(response.data.profilePicture)
+        setFetch(false)
+    })
+    },[])
+
     function textattractionWasChanged(e: React.ChangeEvent<HTMLInputElement> |React.ChangeEvent<HTMLSelectElement>| React.ChangeEvent<HTMLTextAreaElement>,whichField: string)
     {
         let newObj = {...AttractionInfo,...{[whichField]: e.target.value}};        
@@ -206,65 +220,69 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
                 });
         }
     }
-    return (<div className="post">
-        {isOpenNewTrip && <NewTrip userName={props.userName} postItem={props.postItem} ></NewTrip>}
-        <div className='addmyTrips'>
-            {isOpen &&Trips!==[]&&<div>
-           {Trips.map((curr, i) => {
-           return <TripName key={i} trip={curr} postItem={props.postItem}  />
-           })} 
-            <button onClick={()=>{setisOpenNewTrip(!isOpenNewTrip)}} >new trip</button></div>}
-
-       
-        </div>
-
+    return fetching ?(<><img className='loading' src="./images/loading.gif" alt="" /></>):(
+        <div className="post">
         <ul>
         
             {setprofileUser(props.userName)}
             {isuserclick&&navigate('/profileUser')}
             <div className="postTop">
-          <div className="postTopLeft">
-            <li className="postUsername"><span  onClick={()=>{setuserclick(!isuserclick)}}>{props.userName} </span> </li>
-            <div className="postCenter">
-            <li> <img className="postImg" src={props.postItem.imgUrl} alt=""  /> </li>
-            </div></div></div>
-            <li >name: {!isEditing ? props.postItem.name : <input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "name")}}
-            type="text"  id="name" name="name" defaultValue={props.postItem.name} /> } </li>
-            <li>location: {!isEditing ? <a href={props.postItem.location}>{props.postItem.name}</a> :<input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "location")}}
-            type="text"  id="location" name="location"  defaultValue={props.postItem.location} /> } </li>
-            <li>description:{!isEditing? props.postItem.description :<input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "description")}}
-            type="text"  id="description" name="description" defaultValue={props.postItem.description} />} </li>
-            <li>category:{!isEditing? props.postItem.category: <select defaultValue={props.postItem.category} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              textWasChanged(e, "category")
-          }}>
-               <option value="choose">Choose</option>
-              <option value="hiking">Hiking</option>
-              <option value="camping">Camping</option>
-              <option value="attraction">Attraction</option>
-            select category</select>} </li>
-            {IsLike?<BsSuitHeartFill onClick={()=>{handleLike()}} color='RED'></BsSuitHeartFill>:<BsSuitHeart onClick={()=>{handleLike()}}></BsSuitHeart>}
-            <AiOutlineComment onClick={()=>{setIsOpenComments(!isOpenComments)}}/>
-            {isOpenComments&&<div>
+            <div className="postTopLeft">
+                <img className="postProfileImg" src={proPic!==""? proPic: "./images/noProfile.jpg"}alt=""/>
+                <li className="postUsername"><span  onClick={()=>{setuserclick(!isuserclick)}}>{props.userName}  </span>   </li></div>
+                <div className='moreactions'>
+                {more&&props.userName===getUser().userName&&<ul className='moreItem'><li  onClick={()=>{deletePost(props)}}><RiDeleteBin6Line></RiDeleteBin6Line>  delete</li><li  onClick={()=>{setIsEditing(!isEditing)}}><BiEditAlt></BiEditAlt>  edit</li></ul>}</div>
+                <li>{ <RiMore2Fill className='more' onClick={()=>{setMore(!more)}}></RiMore2Fill>}</li>
+                </div>
+                <li className='categoryTag'>{!isEditing? props.postItem.category: <select defaultValue={props.postItem.category} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {textWasChanged(e, "category")}}>
+                    <option value="choose">Choose</option>
+                    <option value="hiking">Hiking</option>
+                    <option value="camping">Camping</option>
+                    <option value="attraction">Attraction</option>
+                    select category</select>} 
+                </li>
+                <div className="postCenter">
+                    <li> <img className="postImg" src={props.postItem.imgUrl} alt=""  /> </li>
+                </div>
+            <ul className='likeandcomment'>
+           <li> {IsLike?<BsSuitHeartFill onClick={()=>{handleLike()}} color='RED'></BsSuitHeartFill>:<BsSuitHeart onClick={()=>{handleLike()}}></BsSuitHeart>} {likes.length}</li>
+            <li><AiOutlineComment onClick={()=>{setIsOpenComments(!isOpenComments)}}></AiOutlineComment>{comments.length}
+            {isOpenComments&&<ul>
                 {comments.map((curr, i) => (
                     curr.secCommentId === "-1" ?
-                        <Comment key={i} Comment={props.postItem.comments} userName={props.userName} postId={props.postItem.postID} commentItems={curr} />
+                        <li className='feedComment'><Comment key={i} Comment={props.postItem.comments} userName={props.userName} postId={props.postItem.postID} commentItems={curr} /></li>
                         : null
                 ))
                 }
-                <input type="text" placeholder="Add comment" value={desc} onChange={event => setDesc(event.target.value)} />
-                <button onClick={() => { SendComment() }}>send </button>
+                
 
-                </div>}
+                </ul>} </li></ul>
+
+            <li >{!isEditing?"":"Name :"}{!isEditing ? "" : <input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "name")}}
+            type="text"  id="name" name="name" defaultValue={props.postItem.name} /> } </li>
+            <li>{!isEditing?<MdLocationOn color='green'/>:"Location :"} {!isEditing ? <a href={props.postItem.location}>{props.postItem.name}</a> :<input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "location")}}
+            type="text"  id="location" name="location"  defaultValue={props.postItem.location} /> } </li>
+            <li>Description : {!isEditing? props.postItem.description :<input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "description")}}
+            type="text"  id="description" name="description" defaultValue={props.postItem.description} />} </li>
+            
             <MdOutlineExpandMore onClick={()=>{setIsOpenInfo(!isOpenInfo)}}/>
             {isOpenInfo&&
-            <div className='categoryInfo'>
+            <div >
                 <div className='camping_info'>
-                    <li> {props.postItem.category==="camping"&& <h4>costPerNight</h4>} </li>
+                    
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="camping"&& <span>Cost per night   :  </span>  } </li>
                     <li> {props.postItem.category==="camping"&& !isEditing? campingInfo.costPerNight :props.postItem.category==="camping"&& <input 
           onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textcampingWasChanged(e, "costPerNight")}}
           type="text"  id="costPerNight" name="costPerNight"  defaultValue={props.postItem.categoryinfo.costPerNight} />} </li>
-                    <li> {props.postItem.category==="camping"&& <h4>meals</h4>} </li>
-                    <li> {props.postItem.category==="camping"&&!isEditing? campingInfo.meals:props.postItem.category==="camping"&&<select defaultValue={props.postItem.categoryinfo.meals} 
+                   </ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="camping"&& <span>meals   :  </span>  } </li>
+                    <li> {props.postItem.category==="camping"&&!isEditing? campingInfo.meals==='selfCatering'?'Self catering':
+                    campingInfo.meals==='breakfastIncluded'?'Breakfast included':
+                    campingInfo.meals==='allInclusive'?'All inclusive':
+                    campingInfo.meals==='breakfastAndLunchIncluded'?'Breakfast and lunch included':'Breakfast and dinner included'
+                    :props.postItem.category==="camping"&&<select defaultValue={props.postItem.categoryinfo.meals} 
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {textcampingWasChanged(e, "meals")}}
           >
             <option value="selfCatering">Self catering</option>
@@ -273,73 +291,105 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
             <option value="breakfastAndLunchIncluded">Breakfast and lunch included</option>
             <option value="breakfastAndDinnerIncluded">Breakfast and dinner included</option>
 
-          select level</select>} </li>
-                    <li> {props.postItem.category==="camping"&& <h4>viewTo</h4>} </li>
+          select level</select>} </li></ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="camping"&& <span>View to    :  </span>  } </li>
                     <li> {props.postItem.category==="camping"&&!isEditing? campingInfo.viewTo:props.postItem.category==="camping"&&<input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textcampingWasChanged(e, "viewTo")}}
             type="text"  id="viewTo" name="viewTo"  defaultValue={props.postItem.categoryinfo.viewTo} />} </li>
-                    <li> {props.postItem.category==="camping"&& <h4>peoplePerRoom</h4>} </li>
+                   </ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="camping"&& <span>People per room    :  </span>  } </li>
                     <li> {props.postItem.category==="camping"&&!isEditing? campingInfo.peoplePerRoom:props.postItem.category==="camping"&&<input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textcampingWasChanged(e, "peoplePerRoom")}}
             type="text"  id="peoplePerRoom" name="peoplePerRoom"  defaultValue={props.postItem.categoryinfo.peoplePerRoom} />} </li>
-                    <li> {props.postItem.category==="camping"&& <h4>includingBath</h4>} </li>
-                    <li> {props.postItem.category==="camping"&&!isEditing? campingInfo.includingBath:props.postItem.category==="camping"&&<input 
+                   </ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="camping"&& <span>Bath      </span>  } </li>
+                    <li> {props.postItem.category==="camping"&&!isEditing? campingInfo.includingBath? <BsCheck color='green'/>:<BsX color='red'/>:props.postItem.category==="camping"&&<input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textcampingWasChanged(e, "includingBath")}}
             type="checkbox" id="includingBath" name="includingBath" defaultValue={props.postItem.categoryinfo.includingBath} />} </li>
-                    <li> {props.postItem.category==="camping"&& <h4>includingGrill</h4>} </li>
-                    <li> {props.postItem.category==="camping"&&!isEditing? campingInfo.includingGrill:props.postItem.category==="camping"&&<input 
+                   </ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="camping"&& <span>Grill    </span>  } </li>
+                    <li> {props.postItem.category==="camping"&&!isEditing? campingInfo.includingGrill? <BsCheck color='green'/>:<BsX color='red'/>:props.postItem.category==="camping"&&<input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textcampingWasChanged(e, "includingGrill")}}
             type="checkbox" id="includingGrill" name="includingGrill" defaultValue={props.postItem.categoryinfo.includingGrill} />} </li>
-                    <li> {props.postItem.category==="camping"&& <h4>includingKitchen</h4>} </li>
-                    <li> {props.postItem.category==="camping"&&!isEditing? campingInfo.includingKitchen:props.postItem.category==="camping"&&<input 
+                    </ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="camping"&& <span>Kitchen     </span>  } </li>
+                    <li> {props.postItem.category==="camping"&&!isEditing? campingInfo.includingKitchen? <BsCheck color='green'/>:<BsX color='red'/>:props.postItem.category==="camping"&&<input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textcampingWasChanged(e, "includingKitchen")}}
             type="checkbox" id="includingKitchen" name="includingKitchen" defaultValue={props.postItem.categoryinfo.includingKitchen} />} </li>
-                </div>
+                </ul></div>
                 <div className='hiking_info'>
-                    <li> {props.postItem.category==="hiking"&& <h4>pathLength</h4>} </li>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="hiking"&& <span>Path length    :  </span>  } </li>
                     <li>{props.postItem.category==="hiking"&&!isEditing? hikingInfo.pathLength:props.postItem.category==="hiking"&&<input 
           onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {texthikingWasChanged(e, "pathLength")}}
           type="text"  id="pathLength" name="pathLength"  defaultValue={props.postItem.categoryinfo.pathLength} />} </li>
-                    <li> {props.postItem.category==="hiking"&& <h4>level</h4>} </li>
-                    <li> {props.postItem.category==="hiking"&&!isEditing? hikingInfo.level:props.postItem.category==="hiking"&&<select defaultValue={props.postItem.categoryinfo.level} 
+                   </ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="hiking"&& <span>Level    :  </span>  } </li>
+                    <li> {props.postItem.category==="hiking"&&!isEditing? hikingInfo.level==='easy'||hikingInfo.level===''?'Easy':
+                    hikingInfo.level==='moderate'?'Moderate':'Streneous'
+                    :props.postItem.category==="hiking"&&<select defaultValue={props.postItem.categoryinfo.level} 
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {texthikingWasChanged(e, "level")}}
           >
             <option value="easy">Easy</option>
             <option value="moderate">Moderate</option>
             <option value="strenuous">Streneous</option>
           select level</select>} </li>
-                    <li> {props.postItem.category==="hiking"&& <h4>totalTime</h4>} </li>
+          </ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="hiking"&& <span>Total time    :  </span>  } </li>
                     <li> {props.postItem.category==="hiking"&&!isEditing? hikingInfo.totalTime:props.postItem.category==="hiking"&&<input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {texthikingWasChanged(e, "totalTime")}}
             type="text"  id="totalTime" name="totalTime"  defaultValue={props.postItem.categoryinfo.totalTime} />} </li>
-                    <li> {props.postItem.category==="hiking"&& <h4>includingClimbing</h4>} </li>
-                    <li> {props.postItem.category==="hiking"&& !isEditing? hikingInfo.includingClimbing:props.postItem.category==="hiking"&&<input 
+                   </ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="hiking"&& <span>Climbing     </span>  } </li>
+                    <li> {props.postItem.category==="hiking"&& !isEditing? hikingInfo.includingClimbing? <BsCheck color='green'/>:<BsX color='red'/>:props.postItem.category==="hiking"&&<input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {texthikingWasChanged(e, "includingClimbing")}}
             type="checkbox" id="includingClimbing" name="includingClimbing" defaultValue={props.postItem.categoryinfo.includingClimbing} />} </li>
-            <li> {props.postItem.category==="hiking"&& <h4>includingWater</h4>} </li>
-                    <li> {props.postItem.category==="hiking"&& !isEditing? hikingInfo.includingWater:props.postItem.category==="hiking"&&<input 
+           </ul>
+                <ul className='categoryInfo'>
+            <li> {props.postItem.category==="hiking"&& <span>Water      </span>  } </li>
+                    <li> {props.postItem.category==="hiking"&& !isEditing? hikingInfo.includingWater? <BsCheck color='green'/>:<BsX color='red'/>:props.postItem.category==="hiking"&&<input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {texthikingWasChanged(e, "includingWater")}}
             type="checkbox" id="includingWater" name="includingWater" defaultValue={props.postItem.categoryinfo.includingWater} />} </li>
-                    <li> {props.postItem.category==="hiking"&& <h4>suitableStrollers</h4>} </li>
-                    <li> {props.postItem.category==="hiking"&&!isEditing? hikingInfo.suitableStrollers:props.postItem.category==="hiking"&&<input 
+                  </ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="hiking"&& <span>Suitable for strollers      </span>  } </li>
+                    <li> {props.postItem.category==="hiking"&&!isEditing? hikingInfo.suitableStrollers? <BsCheck color='green'/>:<BsX color='red'/>:props.postItem.category==="hiking"&&<input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {texthikingWasChanged(e, "suitableStrollers")}}
             type="checkbox" id="suitableStrollers" name="suitableStrollers" defaultValue={props.postItem.categoryinfo.suitableStrollers} />} </li>
-                </div>
+                </ul></div>
                 <div className='attraction_info'>
-                    <li> {props.postItem.category==="attraction"&& <h4>cost</h4>} </li>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="attraction"&& <span>Cost    :  </span>  } </li>
                     <li>  {props.postItem.category==="attraction"&&!isEditing? AttractionInfo.cost:props.postItem.category==="attraction"&& <input 
           onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textattractionWasChanged(e, "cost")}}
           type="text"  id="cost" name="cost"  defaultValue={props.postItem.categoryinfo.cost} />} </li>
-                    <li> {props.postItem.category==="attraction"&& <h4>minAge</h4>} </li>
+                   </ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="attraction"&& <span>Minimum age    :  </span>  } </li>
                     <li> {props.postItem.category==="attraction"&&!isEditing? AttractionInfo.minAge:props.postItem.category==="attraction"&&<input 
           onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textattractionWasChanged(e, "minAge")}}
           type="text"  id="minAge" name="minAge"  defaultValue={props.postItem.categoryinfo.minAge} />} </li>
-                    <li> {props.postItem.category==="attraction"&& <h4>maxAge</h4>} </li>
+                   </ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="attraction"&& <span>Maximum age    :  </span>  } </li>
                     <li> {props.postItem.category==="attraction"&&!isEditing? AttractionInfo.maxAge:props.postItem.category==="attraction"&&<input 
           onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textattractionWasChanged(e, "maxAge")}}
           type="text"  id="maxAge" name="maxAge"  defaultValue={props.postItem.categoryinfo.maxAge} />} </li>
-                    <li> {props.postItem.category==="attraction"&& <h4>season</h4>} </li>
-                    <li> {props.postItem.category==="attraction"&&!isEditing? AttractionInfo.season:props.postItem.category==="attraction"&&<select defaultValue={props.postItem.categoryinfo.season} 
+                   </ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="attraction"&& <span>Best season    :  </span>  } </li>
+                    <li> {props.postItem.category==="attraction"&&!isEditing? AttractionInfo.season==='winter'||AttractionInfo.season===''?'Winter':
+                    AttractionInfo.season==='spring'?'Spring':
+                    AttractionInfo.season==='autom'?'Autom':'Summer'
+                    :props.postItem.category==="attraction"&&<select defaultValue={props.postItem.categoryinfo.season} 
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {textattractionWasChanged(e, "season")}}
           >
             <option value="winter">winter</option>
@@ -347,43 +397,58 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
             <option value="autom">autom</option>
             <option value="summer">summer</option>
             best season</select>} </li>
-                    <li> {props.postItem.category==="attraction"&& <h4>suitableForPregnant</h4>} </li>
-                    <li> {props.postItem.category==="attraction"&&!isEditing? AttractionInfo.suitableForPregnant:props.postItem.category==="attraction"&&<input 
+            </ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="attraction"&& <span>Suitable for pregnant      </span>  } </li>
+                    <li> {props.postItem.category==="attraction"&&!isEditing? AttractionInfo.suitableForPregnant? <BsCheck color='green'/>:<BsX color='red'/>:props.postItem.category==="attraction"&&<input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textattractionWasChanged(e, "suitableForPregnant")}}
             type="checkbox" id="suitableForPregnant" name="suitableForPregnant" defaultValue={props.postItem.categoryinfo.suitableForPregnant} />} </li>
-                    <li> {props.postItem.category==="attraction"&& <h4>suitableForPeopleWithDisabilities</h4>} </li>
-                    <li> {props.postItem.category==="attraction"&&!isEditing? AttractionInfo.suitableForPeopleWithDisabilities:props.postItem.category==="attraction"&&<input 
+                    </ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="attraction"&& <span>Suitable for people with disabilities      </span>  } </li>
+                    <li> {props.postItem.category==="attraction"&&!isEditing? AttractionInfo.suitableForPeopleWithDisabilities? <BsCheck color='green'/>:<BsX color='red'/>:props.postItem.category==="attraction"&&<input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textattractionWasChanged(e, "suitableForPeopleWithDisabilities")}}
             type="checkbox" id="suitableForPeopleWithDisabilities" name="suitableForPeopleWithDisabilities" defaultValue={props.postItem.categoryinfo.suitableForPeopleWithDisabilities} />} </li>
-                    <li> {props.postItem.category==="attraction"&& <h4>suitableForGroups</h4>} </li>
-                    <li> {props.postItem.category==="attraction"&&!isEditing? AttractionInfo.suitableForGroups:props.postItem.category==="attraction"&&<input 
+                    </ul>
+                <ul className='categoryInfo'>
+                    <li> {props.postItem.category==="attraction"&& <span>Suitable for groups      </span>  } </li>
+                    <li> {props.postItem.category==="attraction"&&!isEditing? AttractionInfo.suitableForGroups? <BsCheck color='green'/>:<BsX color='red'/>:props.postItem.category==="attraction"&&<input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textattractionWasChanged(e, "suitableForGroups")}}
             type="checkbox" id="suitableForGroups" name="suitableForGroups" defaultValue={props.postItem.categoryinfo.suitableForGroups} />} </li>
-                </div>
+               </ul> </div>
             </div>
             
             }
         </ul>
+        <div className='addToTrip'>
         {isEditing&&<button onClick={()=>{savePost()}}>save</button>}
-        {props.userName===getUser().userName&&<button onClick={()=>{deletePost(props)}}>delete</button>}
-        {props.userName===getUser().userName&&<button onClick={()=>{setIsEditing(!isEditing)}}>edit</button>}
-        {/* <button onClick={()=>{setIsOpen(!isOpen)}} onBlur={()=>{searchForTrips(props.userName)}}>add to my trip</button> */}
-        <button onClick={()=>{searchForTrips(props.userName)}} >add to my trip</button>
-
+        {isOpenNewTrip && <NewTrip userName={props.userName} postItem={props.postItem} ></NewTrip>}
+        <div >
+            {isOpen &&Trips!==[]&&<div className='addmyTrips'>
+           {Trips.map((curr, i) => {
+           return <TripName  key={i} trip={curr} postItem={props.postItem}  />
+           })} 
+            <button onClick={()=>{setisOpenNewTrip(!isOpenNewTrip)}} >new trip</button></div>}
+        </div></div>
+        <div className='postButtom'>
+            <input type="text" placeholder="Add comment" value={desc} onChange={event => setDesc(event.target.value)} />
+            <BiSend className='sendIcon' onClick={() => { SendComment() }}> </BiSend>
+            <button className='addToMyTrip' onClick={()=>{searchForTrips(props.userName)}} >add to my trip</button>
+        </div>
     </div>)
 }
 
 function TripName(props:{trip:{tripId:number,Name: string,planner:string,days:number,posts:Array<any>,members:Array<string>,equipmentList:Array<any>},postItem:{name:String,location:String,imgUrl:String,description:String,category:String}}){
     function addPostToTrip() {
-        const url="http://127.0.0.1:5435/trips/"+localStorage.getItem('userNameLogged')+'/'+props.trip.tripId
+        const url="http://127.0.0.1:5435/trips/addTo/"+localStorage.getItem('userNameLogged')+'/'+props.trip.tripId
         axios.put(url,props.postItem)
             .then(response => {
                 console.log(response.data);
                 alert('the post added to your trip')
             });    }
     return(
-        <div>
-            <button onClick={()=>{addPostToTrip()}}>{props.trip.Name}</button>
+        <div className='allTrips'>
+            <button  onClick={()=>{addPostToTrip()}}>{props.trip.Name}</button>
         </div>
     )
 }
@@ -428,30 +493,27 @@ function Comment(props: { userName: string, postId: number, Comment: Array<any>,
 
     return (
         <div>
-            <span >
-                {props.commentItems.userName}
-
-            </span>
+            <span >{props.commentItems.userName}  </span>  
             <input defaultValue={props.commentItems.content} />
-            <span onClick={() => { setisOpen(isOpen ? false : true) }}> Reply </span>
+            <BsReply onClick={() => { setisOpen(isOpen ? false : true) }}></BsReply>  
+            <MdOutlineDelete onClick={() => { handleDelete() }} />
             {isOpen &&
                 <div>
                     {comments.map((curr, i) => (
                         curr.secCommentId === props.commentItems.commentId ?
                             <div key={i}>
-                                <span> {curr.nickname}</span>
+                                <span> {curr.nickname}     </span>  
                                 <input defaultValue={curr.content} />
                             </div>
                             : null
                     ))
                     }
                     <input type="text" placeholder="Add comment" value={desc} onChange={event => setDesc(event.target.value)} />
-                    <button onClick={() => { SendComment() }}>send </button>
-
+                    <BiSend className='sendIcon' onClick={() => { SendComment() }}> </BiSend>
                 </div>
 
             }
-            <TiDelete onClick={() => { handleDelete() }} />
+            
 
 
         </div >

@@ -6,3 +6,7 @@ button{
 .myTripPage{
     display: flex;
 }
+.tripActionNav:focus  {
+    background-color: #301906;
+    color: rgb(255, 255, 255);
+}
