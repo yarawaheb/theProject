@@ -11,8 +11,9 @@ import { useEffect } from 'react';
 export function AddPost() {
   const navigate = useNavigate()
   let [fetching,setFetch] = useState(true);
+  let [postId,setPostId]=useState(getUser().posts.length)
   let [postInfo, setPostInfo] = useState({
-    postID:getUser().posts.length+1,
+    postID:0,
     imgUrl: "", 
     name: "",
     description:"",
@@ -82,6 +83,7 @@ export function AddPost() {
     setFetch(!fetching)
   },[])
   function sharePost(e: React.FormEvent<HTMLFormElement>) {
+    setPostId(getUser().posts.length)
     e.preventDefault();
     if(categoryIsSet==='hiking'){
       postInfo.categoryinfo=hikingInfo;
@@ -92,6 +94,9 @@ export function AddPost() {
     if(categoryIsSet==='attraction'){
       postInfo.categoryinfo=AttractionInfo;
     }
+    console.log(postInfo);
+    postInfo.postID=postId;
+    console.log(postInfo);
     const username=localStorage.getItem('userNameLogged');
     axios.put("http://localhost:5435/posts/"+username,postInfo)
     .then(response1 => {
@@ -104,31 +109,33 @@ export function AddPost() {
     <div className="share">
       <form id="personalinfor" onSubmit={(e) => { sharePost(e) }}>          
         <div className='uploadPhotoBtn'>
+          <label className='uploadbtn' htmlFor="">
         <input onChange={(e:React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e,"imgUrl")}} 
-        className='uploadbtn' type="file" id="imgUrl" name="imgUrl"/>
+         type="file" id="imgUrl" name="imgUrl" />Upload an image</label>
         </div>
+      <div className='allForm'>
         <div className="place">
         <div className='placeName'>
-          <label htmlFor="">add name</label>
+          {/* <label htmlFor="">add name</label> */}
           <input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "name")}}
-          type="text"  id="name" name="name"  />
+          type="text"  id="name" name="name" placeholder='Name' />
         </div>
         <div className='descriptionInput'>
-          <label htmlFor="">add description</label>
+          {/* <label htmlFor="">add description</label> */}
           <input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "description")}}
-          type="text"  id="description" name="description"   />
+          type="text"  id="description" name="description"  placeholder='Description' />
         </div>
         <div className='location'>
-          <label htmlFor="">add a location</label>
+          {/* <label htmlFor="">add a location</label> */}
           <input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "location")}}
-          type="text"  id="location" name="location"  />
+          type="text"  id="location" name="location" placeholder='Location'  />
         </div>
         <div className='category'>
-          <label htmlFor="">select category</label>
+          {/* <label htmlFor="">select category</label> */}
           <select defaultValue={"category"} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
             textWasChanged(e, "category")
         }}>
-             <option value="choose">Choose</option>
+             <option value="choose">Category</option>
             <option value="hiking">Hiking</option>
             <option value="camping">Camping</option>
             <option value="attraction">Attraction</option>
@@ -137,92 +144,94 @@ export function AddPost() {
         {categoryIsSet==='hiking'&&
         <form id="hikingForm"  >          
       <div className='pathLength'>
-          <label htmlFor="">path length</label>
+          {/* <label htmlFor="">path length</label> */}
           <input 
           onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {texthikingWasChanged(e, "pathLength")}}
-          type="text"  id="pathLength" name="pathLength"   />
+          type="text"  id="pathLength" name="pathLength" placeholder='Path length'  />
       </div>
         <div className='level'>
-          <label htmlFor="">select level</label>
+          {/* <label htmlFor="">select level</label> */}
           <select defaultValue={"level"} 
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {texthikingWasChanged(e, "level")}}
           >
+            <option value="Level">Level</option>
             <option value="easy">Easy</option>
             <option value="moderate">Moderate</option>
             <option value="strenuous">Streneous</option>
           select level</select>
         </div>
         <div className='totalTime'>
-            <label htmlFor="">Total time</label>
+            {/* <label htmlFor="">Total time</label> */}
             <input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {texthikingWasChanged(e, "totalTime")}}
-            type="text"  id="totalTime" name="totalTime"   />
+            type="text"  id="totalTime" name="totalTime"  placeholder='Total time' />
         </div>
         <div className='includingClimbing'>
-            <label htmlFor="">including Climbing?</label>
+            <label htmlFor="">Including Climbing?</label>
             <input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {texthikingWasChanged(e, "includingClimbing")}}
             type="checkbox" id="includingClimbing" name="includingClimbing"  />
         </div> 
         <div className='includingWater'>
-            <label htmlFor="">including water?</label>
+            <label htmlFor="">Including water?</label>
             <input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {texthikingWasChanged(e, "includingWater")}}
             type="checkbox" id="includingWater" name="includingWater"  />
         </div>  
         <div className='suitableStrollers'>
-            <label htmlFor="">suitable for strollers?</label>
+            <label htmlFor="">Suitable for strollers?</label>
             <input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {texthikingWasChanged(e, "suitableStrollers")}}
             type="checkbox" id="suitableStrollers" name="suitableStrollers"  />
         </div>               
     </form>}
-        {categoryIsSet==='camping'&&<form id="campingForm" >          
+        {categoryIsSet==='camping'&&<form className='campingForm' id="campingForm" >          
       <div className='costPerNight'>
-          <label htmlFor="">cost per night</label>
+          {/* <label htmlFor="">cost per night</label> */}
           <input 
           onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textcampingWasChanged(e, "costPerNight")}}
-          type="text"  id="costPerNight" name="costPerNight"   />
+          type="text"  id="costPerNight" name="costPerNight" placeholder='Cost per night'  />
       </div>
         <div className='meals'>
-          <label htmlFor="">select meals</label>
+          {/* <label htmlFor="">select meals</label> */}
           <select defaultValue={"meals"} 
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {textcampingWasChanged(e, "meals")}}
           >
+            <option value="selfCatering">Meals</option>
             <option value="selfCatering">Self catering</option>
             <option value="breakfastIncluded">Breakfast included</option>
             <option value="allInclusive">All inclusive</option>
             <option value="breakfastAndLunchIncluded">Breakfast and lunch included</option>
             <option value="breakfastAndDinnerIncluded">Breakfast and dinner included</option>
 
-          select level</select>
+          </select>
         </div>
         <div className='viewTo'>
-            <label htmlFor="">View To</label>
+            {/* <label htmlFor="">View To</label> */}
             <input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textcampingWasChanged(e, "viewTo")}}
-            type="text"  id="viewTo" name="viewTo"   />
+            type="text"  id="viewTo" name="viewTo" placeholder='View to'  />
         </div>
         <div className='peoplePerRoom'>
-            <label htmlFor="">People per room</label>
+            {/* <label htmlFor="">People per room</label> */}
             <input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textcampingWasChanged(e, "peoplePerRoom")}}
-            type="text"  id="peoplePerRoom" name="peoplePerRoom"   />
+            type="text"  id="peoplePerRoom" name="peoplePerRoom"  placeholder='People per room' />
         </div>
         <div className='includingBath'>
-            <label htmlFor="">including bath?</label>
+            <label htmlFor="">Including bath?</label>
             <input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textcampingWasChanged(e, "includingBath")}}
             type="checkbox" id="includingBath" name="includingBath"  />
         </div> 
         <div className='includingGrill'>
-            <label htmlFor="">including grill?</label>
+            <label htmlFor="">Including grill?</label>
             <input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textcampingWasChanged(e, "includingGrill")}}
             type="checkbox" id="includingGrill" name="includingGrill"  />
         </div>  
         <div className='includingKitchen'>
-            <label htmlFor="">including kitchen?</label>
+            <label htmlFor="">Including kitchen?</label>
             <input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textcampingWasChanged(e, "includingKitchen")}}
             type="checkbox" id="includingKitchen" name="includingKitchen"  />
@@ -231,28 +240,29 @@ export function AddPost() {
     </form>}
         {categoryIsSet==='attraction'&&<form id="attractionsForm" >          
       <div className='cost'>
-          <label htmlFor="">Ticket price</label>
+          {/* <label htmlFor="">Ticket price</label> */}
           <input 
           onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textattractionWasChanged(e, "cost")}}
-          type="text"  id="cost" name="cost"   />
+          type="text"  id="cost" name="cost" placeholder='Ticket price'  />
       </div>
       <div className='minAge'>
-          <label htmlFor="">minimum age</label>
+          {/* <label htmlFor="">minimum age</label> */}
           <input 
           onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textattractionWasChanged(e, "minAge")}}
-          type="text"  id="minAge" name="minAge"   />
+          type="text"  id="minAge" name="minAge" placeholder='Minimum age'  />
       </div>
       <div className='maxAge'>
-          <label htmlFor="">maximum age</label>
+          {/* <label htmlFor="">maximum age</label> */}
           <input 
           onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textattractionWasChanged(e, "maxAge")}}
-          type="text"  id="maxAge" name="maxAge"   />
+          type="text"  id="maxAge" name="maxAge"  placeholder='Maximum age' />
       </div>
         <div className='season'>
-          <label htmlFor="">best season</label>
+          {/* <label htmlFor="">best season</label> */}
           <select defaultValue={"season"} 
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {textattractionWasChanged(e, "season")}}
           >
+            <option value="winter">Best season</option>
             <option value="winter">winter</option>
             <option value="spring">spring</option>
             <option value="autom">autom</option>
@@ -260,26 +270,27 @@ export function AddPost() {
             best season</select>
         </div>
         <div className='suitableForPregnant'>
-            <label htmlFor="">suitable for pregnant?</label>
+            <label htmlFor="">Suitable for pregnant?</label>
             <input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textattractionWasChanged(e, "suitableForPregnant")}}
             type="checkbox" id="suitableForPregnant" name="suitableForPregnant"  />
         </div> 
         <div className='suitableForPeopleWithDisabilities'>
-            <label htmlFor="">suitable for people with disabilities?</label>
+            <label htmlFor="">Suitable for people with disabilities?</label>
             <input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textattractionWasChanged(e, "suitableForPeopleWithDisabilities")}}
             type="checkbox" id="suitableForPeopleWithDisabilities" name="suitableForPeopleWithDisabilities"  />
         </div>  
         <div className='suitableForGroups'>
-            <label htmlFor="">suitable for groups?</label>
+            <label htmlFor="">Suitable for groups?</label>
             <input 
             onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textattractionWasChanged(e, "suitableForGroups")}}
             type="checkbox" id="suitableForGroups" name="suitableForGroups"  />
         </div>   
     </form>}
         </div>
-        <button type='submit'>share</button> 
+        <button className='shareBtn' type='submit'>share</button> 
+        </div>
       </form>
     </div>
   );

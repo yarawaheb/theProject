@@ -112,18 +112,43 @@
       -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
       box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
       margin-left:26%;
+      background-image: url('C:\Users\Yara Waheb\OneDrive\שולחן העבודה\lotus\theProject\project\my-app\public\images\bosli.jfif');
+      background-size: cover;
   }
   .addmyTrips{
       margin-bottom: 55px;
+      
+      background-color: rgba(255, 255, 255, 0.801);
+    }
+  .newTripBtnStyle{
+    margin: 10px;
+    background-color: rgba(227, 223, 209, 0.701);
+    border-style: solid ;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 150px;
+    -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+      box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
   }
   .allTrips {
-    border-top: none;
+    border-bottom: none;
     border-left: none;
     border-right: none;
-    border-bottom: solid 1px black;
+    border-top: solid 1px black;
     justify-content: center;
-    padding-top: 3px;  
+    /* background-color: rgba(209, 198, 161, 0.562); */
+    padding-top: 9px;  
+    padding-bottom: 6px;
     margin-bottom: 5px;  
+    display: flex;
+    align-items: center;
+}
+.allTrips button{
+  background-color: rgba(255, 255, 255, 0.801);
+  border-style: none;
+  -webkit-box-shadow: 5px 5px 16px -8px rgba(0, 0, 0, 0.68);
+      box-shadow: 3px 3px 16px -8px rgba(0, 0, 0, 0.68);
+  cursor: pointer;
 }
 .postButtom{
     align-items: center;
@@ -140,4 +165,23 @@
 }
 .feedComment{
   margin-left: -450px;
+}
+.sendSecComment{
+  margin-left: 30px;
+  display: flex;
+  margin-top: 10px;
+}
+.secComments{
+  margin-left: 30px;
+}
+.secCommentInput{
+  width: 250px;
+}
+.commentInput{
+  /* width: 450px; */
+  height: 20px;
+  /* margin-left: 15px; */
+}
+.deleteCommentIcon{
+  cursor: pointer;
 }

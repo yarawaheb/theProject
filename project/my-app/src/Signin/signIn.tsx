@@ -49,7 +49,7 @@ export function Signin() {
 
                     setToken(response1.data.token)
                     setUser(users);
-                    navigate('/profile/myProfile')
+                    navigate('/')
                     }})
                     
                 })

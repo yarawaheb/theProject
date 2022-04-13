@@ -50,6 +50,18 @@ export function Feed() {
                         
                     }
                 }
+                for (let i = postArr.length - 1; i > 0; i--) {
+                    let j = Math.floor(Math.random() * (i + 1));
+                    let temp={}
+                    let temp2=""
+                    temp=postArr[i];
+                    temp2=usernameArr[i];
+                    // let temp = postArr[i];
+                    postArr[i] = postArr[j];
+                    usernameArr[i]=usernameArr[j]
+                    postArr[j] = temp;
+                    usernameArr[j]=temp2;
+                  }
 
                 setPosts(postArr);
                 setUsername(usernameArr)
@@ -88,9 +100,10 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
     let [isOpenComments,setIsOpenComments]=useState(false)
     const [desc, setDesc] = useState('');
     let [TripsAreHere,setTripsAreHere]=useState(false)
-    let [IsLike,setIsLike]=useState(props.postItem.likes.includes(getUser().userName)?true:false)
+    let [IsLike,setIsLike]=useState(props.postItem.likes.includes(localStorage.getItem('userNameLogged'))?true:false)
     let [comments, setcomments] = useState(props.postItem.comments);
     let [likes, setLikes] = useState(props.postItem.likes);
+    let [likesLength,setLikesLength]=useState(props.postItem.likes.length)
     let [proPic,setProPic] = useState("")////////*****/
     let [Trips,setTrips]=useState([{tripId:0,Name: "",planner:"",days:0,posts:[{}],members:[],equipmentList:[{}]}])
     let url2 = 'http://127.0.0.1:5435/posts/AddComment/' + props.userName + '/' + props.postItem.postID
@@ -104,7 +117,7 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
         if(props.postItem.category==="attraction"){
             setAttractionInfo(props.postItem.categoryinfo);
         }
-        setIsLike(props.postItem.likes.includes(getUser().userName)?true:false)
+        setIsLike(props.postItem.likes.includes(localStorage.getItem('userNameLogged'))?true:false)
         
     },[likes]);
      let [postInfo, setPostInfo] = useState(props.postItem)
@@ -199,23 +212,37 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
         setIsLike(!IsLike)
         console.log(IsLike);
         
-        if(!likes.includes(getUser().userName)){
+        if(!likes.includes(localStorage.getItem('userNameLogged'))){
             let url2 = 'http://127.0.0.1:5435/posts/AddLike/' + props.userName + '/' + props.postItem.postID
-            axios.put(url2, {user:getUser().userName})
+            axios.put(url2, {user:localStorage.getItem('userNameLogged')})
                 .then(response => {
                     console.log(response.data);
-                    likes.push(getUser().userName);
+                    likes.push(localStorage.getItem('userNameLogged'));
                     setLikes(likes);
+                    setLikesLength(likesLength++);
+                    setLikesLength(likesLength++);
                     console.log(likes);
                 });
         }
         else{
-            let url2 = 'http://127.0.0.1:5435/posts/RemoveLike/' + props.userName + '/' + props.postItem.postID +"/"+getUser().userName
+            let url2 = 'http://127.0.0.1:5435/posts/RemoveLike/' + props.userName + '/' + props.postItem.postID +"/"+localStorage.getItem('userNameLogged')
             axios.delete(url2)
                 .then(response => {
                     console.log(response.data);
-                    // likes.pop(getUser().userName);
-                    // setLikes(likes);
+                    for (let i = 0; i < likes.length; i++) {
+                        if(likes[i]===localStorage.getItem('userNameLogged')){
+                            var temp=likes[likes.length-1];
+                            likes[likes.length-1]=likes[i];
+                            likes[i]=temp;
+                            likes.pop();
+                            console.log(likes);
+                            
+                        }
+
+                    }
+                    setLikes(likes);
+                    setLikesLength(likesLength--);
+                    setLikesLength(likesLength--);
                     console.log(likes);
                 });
         }
@@ -234,18 +261,13 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
                 {more&&props.userName===getUser().userName&&<ul className='moreItem'><li  onClick={()=>{deletePost(props)}}><RiDeleteBin6Line></RiDeleteBin6Line>  delete</li><li  onClick={()=>{setIsEditing(!isEditing)}}><BiEditAlt></BiEditAlt>  edit</li></ul>}</div>
                 <li>{ <RiMore2Fill className='more' onClick={()=>{setMore(!more)}}></RiMore2Fill>}</li>
                 </div>
-                <li className='categoryTag'>{!isEditing? props.postItem.category: <select defaultValue={props.postItem.category} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {textWasChanged(e, "category")}}>
-                    <option value="choose">Choose</option>
-                    <option value="hiking">Hiking</option>
-                    <option value="camping">Camping</option>
-                    <option value="attraction">Attraction</option>
-                    select category</select>} 
+                <li className='categoryTag'>{props.postItem.category} 
                 </li>
                 <div className="postCenter">
                     <li> <img className="postImg" src={props.postItem.imgUrl} alt=""  /> </li>
                 </div>
             <ul className='likeandcomment'>
-           <li> {IsLike?<BsSuitHeartFill onClick={()=>{handleLike()}} color='RED'></BsSuitHeartFill>:<BsSuitHeart onClick={()=>{handleLike()}}></BsSuitHeart>} {likes.length}</li>
+           <li> {IsLike?<BsSuitHeartFill onClick={()=>{handleLike()}} color='RED'></BsSuitHeartFill>:<BsSuitHeart onClick={()=>{handleLike()}}></BsSuitHeart>} {likesLength}</li>
             <li><AiOutlineComment onClick={()=>{setIsOpenComments(!isOpenComments)}}></AiOutlineComment>{comments.length}
             {isOpenComments&&<ul>
                 {comments.map((curr, i) => (
@@ -425,13 +447,14 @@ export const Post1 = (props: {userName:string , postItem: {postID:number,categor
         {isOpenNewTrip && <NewTrip userName={props.userName} postItem={props.postItem} ></NewTrip>}
         <div >
             {isOpen &&Trips!==[]&&<div className='addmyTrips'>
+            <button className='newTripBtnStyle' onClick={()=>{setisOpenNewTrip(!isOpenNewTrip)}} >{!isOpenNewTrip?'Create new trip':'Exit'}</button>
            {Trips.map((curr, i) => {
            return <TripName  key={i} trip={curr} postItem={props.postItem}  />
            })} 
-            <button onClick={()=>{setisOpenNewTrip(!isOpenNewTrip)}} >new trip</button></div>}
+            </div>}
         </div></div>
         <div className='postButtom'>
-            <input type="text" placeholder="Add comment" value={desc} onChange={event => setDesc(event.target.value)} />
+            <input className='commentInput' type="text" placeholder="Add comment" value={desc} onChange={event => setDesc(event.target.value)} />
             <BiSend className='sendIcon' onClick={() => { SendComment() }}> </BiSend>
             <button className='addToMyTrip' onClick={()=>{searchForTrips(props.userName)}} >add to my trip</button>
         </div>
@@ -496,20 +519,22 @@ function Comment(props: { userName: string, postId: number, Comment: Array<any>,
             <span >{props.commentItems.userName}  </span>  
             <input defaultValue={props.commentItems.content} />
             <BsReply onClick={() => { setisOpen(isOpen ? false : true) }}></BsReply>  
-            <MdOutlineDelete onClick={() => { handleDelete() }} />
+            {localStorage.getItem('userNameLogged')===props.userName||localStorage.getItem('userNameLogged')===props.commentItems.userName?<MdOutlineDelete className='deleteCommentIcon' onClick={() => { handleDelete() }} />:""}
             {isOpen &&
                 <div>
                     {comments.map((curr, i) => (
                         curr.secCommentId === props.commentItems.commentId ?
-                            <div key={i}>
+                            <div key={i} className='secComments'>
                                 <span> {curr.nickname}     </span>  
                                 <input defaultValue={curr.content} />
+                                {localStorage.getItem('userNameLogged')===props.userName||localStorage.getItem('userNameLogged')===curr.nickname?<MdOutlineDelete className='deleteCommentIcon' onClick={() => { handleDelete() }} />:""}
                             </div>
                             : null
                     ))
                     }
-                    <input type="text" placeholder="Add comment" value={desc} onChange={event => setDesc(event.target.value)} />
-                    <BiSend className='sendIcon' onClick={() => { SendComment() }}> </BiSend>
+                    <div className='sendSecComment'>
+                    <input className='secCommentInput' type="text" placeholder="Add comment" value={desc} onChange={event => setDesc(event.target.value)} />
+                    <BiSend className='sendIcon' onClick={() => { SendComment() }}> </BiSend></div>
                 </div>
 
             }

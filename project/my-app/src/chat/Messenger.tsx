@@ -11,9 +11,11 @@ import { time } from "console";
 import { RiChatNewFill } from "react-icons/ri";
 
 export default function Messenger() {
-  const [conversations, setConversations] = useState([{chatID:"",members:[""],messages:[{content:"",messageID:"",time:new Date()}]}]);
+  const [proIMGLogged, setIMG1] = useState(getUser().profilePicture);
+  const [proIMGOther, setIMG2] = useState("");
+  const [conversations, setConversations] = useState([{chatID:-1,members:[""],messages:[{content:"",messageID:"",time:new Date()}]}]);
   const [messages, setmessages] = useState([{msg:{content:"",messageID:"",time:new Date()},sender:""}]);
-  const [currentChat, setCurrentChat] = useState({chatID:"",members:[""],messages:[{}]});
+  const [currentChat, setCurrentChat] = useState({chatID:-1,members:[""],messages:[{}]});
   const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState({msg:{content:"",messageID:"",time:new Date()},sender:""});
   const [onlineUsers, setOnlineUsers] = useState([""]); 
@@ -26,14 +28,15 @@ export default function Messenger() {
   const [people, setPeople] = useState([""]);
   const [openRes,setOpenRes]=useState(false)
 
+
   function handleClick(item: string){
     let len=0
     axios.get("http://127.0.0.1:5435/chat/conversations/" + item)
         .then(res=>{
           len=res.data.length;
        
-    const newConv1={chatID:JSON.stringify(len+1),members:[localStorage.getItem('userNameLogged')],messages:[]}
-    const newConv={chatID:JSON.stringify(conversations.length+1),members:[item],messages:[]}
+    const newConv1={chatID:len,members:[localStorage.getItem('userNameLogged')],messages:[]}
+    const newConv={chatID:conversations.length,members:[item],messages:[]}
   
     axios.put("http://127.0.0.1:5435/chat/addConv/" + localStorage.getItem('userNameLogged')+'/'+item,{newConv,newConv1})
         .then(res=>{
@@ -49,10 +52,15 @@ export default function Messenger() {
   })
   }
 
-  function setChat(c: { chatID: string; members: string[]; messages: {content:string,messageID:string,time:Date}[] }): void {
+  function setChat(c: { chatID: number; members: string[]; messages: {content:string,messageID:string,time:Date}[] }): void {
     setCurrentChat(c)
     for (let i = 0; i < conversations.length; i++) {
       if(conversations[i].members[0]===c.members[0]){
+        const friendId = c.members[0];
+        axios.get("http://localhost:5435/users/username",{params:friendId})
+        .then(response =>{
+          setIMG2(response.data.profilePicture)
+        })
           ShowChat(conversations[i])
         }
     }
@@ -129,6 +137,8 @@ export default function Messenger() {
         axios.get("http://127.0.0.1:5435/chat/conversations/" + localStorage.getItem('userNameLogged'))
         .then(res=>{
           setConversations(res.data);
+          console.log(res.data);
+          
         })
   }, []);
 
@@ -176,6 +186,7 @@ export default function Messenger() {
               }
             }
           }
+          console.log(allmsg);
           
           setmessages(allmsg)
           setGotMessages(true)
@@ -242,12 +253,12 @@ export default function Messenger() {
         </div>
         <div className="chatBox">
           <div className="chatBoxWrapper">
-            {currentChat.chatID!=="" && gotmessages ? (
+            {currentChat.chatID!==-1 && gotmessages ? (
               <>
                 <div className="chatBoxTop">
                   {messages.map((m,i) => (
                     <div key={i} ref={scrollRef}>
-                      <Message key={i} item={m}  />
+                      <Message key={i} item={m} proIMG={m.sender===user?proIMGLogged:proIMGOther}   />
                       </div>
                   ))}
                   

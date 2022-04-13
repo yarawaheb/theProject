@@ -6,7 +6,27 @@
   .chatMenu {
     flex: 3.5;
   }
+  .chatMenuWrapper {
+    margin-top: 5px;
+    list-style: none;
+    background-color: rgba(255, 255, 255, 0.473);
+    -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+    box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+    width: 90%;
+  }
+  
+  .chatMenuWrapper button {
+    width: 100%;
+    height: 40px;
+    border: none;
+    background: transparent;
+    -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+    box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+    border-bottom: solid black 1px;
+    font-family: 'Lora', cursive;
+    margin-left: -37px;
 
+  }
   .chatMenuInput {
     width: 90%;
     padding: 10px 0;

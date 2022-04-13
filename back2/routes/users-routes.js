@@ -18,6 +18,7 @@ router.get("/followersAndFollowings/:username", async (req, res) => {
 
 //follow a user
 router.put("/follow/:username", async (req, res) => {
+    console.log(req.body.username +" trying to follw "+ req.params.username);
     await User.updateOne({ userName: req.params.username }, { $push: { followers: req.body.username } });
     await User.updateOne({ userName: req.body.username }, { $push: { followings: req.params.username } });
     res.json("followed!");
@@ -28,7 +29,7 @@ router.put("/follow/:username", async (req, res) => {
 router.put("/unfollow/:username", async (req, res) => {
     await User.updateOne({ userName: req.params.username }, { $pull: { followers: req.body.username } });
     await User.updateOne({ userName: req.body.username }, { $pull: { followings: req.params.username } });
-    res.json("followed!");
+    res.json("unfollowed!");
   
   });
 

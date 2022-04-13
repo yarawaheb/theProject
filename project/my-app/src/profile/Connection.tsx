@@ -21,24 +21,24 @@ export  function Connections() {
 
                 setFetch(false);
             });
-    },[followers,followings]);
+    },[]);
     return /*fetching ?(<><img className='loading' src="./images/loading.gif" alt="" /></>):*/(
         <div className='followers'>
             <ul className='followersAndFollowingsList'>
                 <li className='followersList'>
                     <ul>
-                    <li><span className='followersTitle'>followers</span></li>
+                    <li><span className='followersTitle'>Followers</span></li>
                     {followers.map((curr, i) => (               
-                   <li><span key={i}>{curr}</span></li> 
+                   <li className='followersBox'><span className='followersNameSpan' key={i}>{curr}</span><button className='removeBtn'>Remove</button></li> 
                     ))
                     }
                     </ul>
                 </li>
                 <li className='followingsList'>
                     <ul>
-                   <li><span className='followingsTitle'>followings</span></li> 
+                   <li><span className='followingsTitle'>Followings</span></li> 
                     {followings.map((curr, i) => (               
-                    <li><span key={i}>{curr}</span></li>
+                    <li className='followingsBox'><span className='followingsNameSpan' key={i}>{curr}</span><button className='unfollowBtn'>Unfollow</button></li>
                     ))
                     }</ul>
                 </li>

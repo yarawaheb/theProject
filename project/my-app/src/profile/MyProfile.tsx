@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Post1 } from './Feed';
-
+import './myProfile.css'
 export  function MyProfile() {
     const username=localStorage.getItem('userNameLogged');
     let [fetching,setFetch] = useState(true);
@@ -44,7 +44,7 @@ export  function MyProfile() {
     console.log(Posts,time);
     
     return fetching ?(<><img className='loading' src="./images/loading.gif" alt="" /></>):(
-        <div>
+        <div className='profilePosts'>
            
             {Posts.map((curr, i) => {
                 
@@ -54,3 +54,4 @@ export  function MyProfile() {
         </div>
     )
 }
+

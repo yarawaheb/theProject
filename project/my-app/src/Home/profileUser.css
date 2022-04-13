@@ -1,0 +1,61 @@
+.userLOGGEDInfo1{
+    display: block;
+    background-color: rgb(80, 121, 121);
+    max-width: 60%;
+    height: 150px;
+    margin-top: 80px;
+    margin-left: 250px;
+    border-radius: 10px;
+}
+.userLOGGEDInfoUL1{
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    justify-content: space-around;
+}
+.ProfileImg1{
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: -70px;
+    /* margin-left: 50px; */
+}
+.userLOGGEDInfoSPAN1{
+    margin-top:15px ;
+    color: rgb(255, 255, 255);
+    font-size: large;
+    
+}
+/* .followerss1{
+    color: white;
+    margin-left: 95px;
+    margin-top: 10px;
+    
+} */
+.lifollowers{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    margin-top: -20px;
+    font-size: 20px;
+
+}
+.liposts{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    margin-top: -20px;
+    font-size: 20px;
+
+}
+.topButoom{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    margin-top: -30px;
+    margin-left: -30px;
+}

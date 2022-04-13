@@ -14,10 +14,14 @@ export function Home(){
     let [fetching,setFetch] = useState(true);
     let[user,setUser]=useState({userName:"",profilePicture:"",followers:[""]})
     useEffect(()=>{
-        setUser(getUser())
-        setFetch(false);
-
-    },[user])
+    const userName=localStorage.getItem('userNameLogged');
+    axios.get("http://localhost:5435/users/username",{params:userName})
+    .then(response =>{
+        setUser(response.data)
+         setFetch(false)
+        console.log(user);
+    })
+    },[])
    if(localStorage.getItem('userNameLogged')!==''){
     return fetching ?(<><img className='loading' src="./images/loading.gif" alt="" /></>):(
         <div  className='HomePage' >

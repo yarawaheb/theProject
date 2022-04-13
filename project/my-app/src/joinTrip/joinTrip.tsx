@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { MdOutlineExpandMore } from 'react-icons/md';
+import { RiMore2Fill } from 'react-icons/ri';
 import { getUser } from '../configStore';
-
+import './joinTrip.css'
 export default function JoinTrip() {
     let [fetching,setFetch] = useState(true);
     let [trips, setTrips] = useState([
@@ -37,8 +39,8 @@ export default function JoinTrip() {
             });
     },[]);
     
-    return fetching ?(<>loadong...</>):(
-        <div>
+    return fetching ?(<><img className='loading' src="./images/loading.gif" alt="" /></>):(
+        <div className='ulTrips'>
            
             {trips.map((curr, i) => {
                 
@@ -50,22 +52,34 @@ export default function JoinTrip() {
 }
 
 function TripCard(props:{trip:{tripId:number,Name: string,planner:string,days:number,posts:Array<any>,members:Array<string>,equipmentList:Array<any>}}){
+    let [places,setPlaces]=useState(false)
+    let [more, setMore] = useState(false)
+    let [membersLength,setMembersLength]=useState(props.trip.members.length)
     function jointhetrip() {
-        axios.put("http://127.0.0.1:5435/trips/join/"+props.trip.planner+"/"+props.trip.tripId,{member:getUser().userName})
+        axios.put("http://127.0.0.1:5435/trips/join/"+props.trip.planner+"/"+props.trip.tripId,{member:localStorage.getItem('userNameLogged')})
             .then(response => {
-                alert(response.data)
+                setMembersLength(membersLength++);
+                setMembersLength(membersLength++);
+                //alert(response.data)
             });
     }
     return(
-        <div className='tripCard'>
-            <button onClick={()=>jointhetrip()}>Join</button>
-            <span>{props.trip.Name}  </span>
-            <span>{props.trip.days} days  </span>
-            <span>{props.trip.members.length} members  </span>
-            <span>created by: {props.trip.planner}  </span>
-             {props.trip.posts.map((curr,i)=>{
-               return <span key={i}>place {i+1} {curr.name}  </span>
-            })} 
+        <div className='JointripCard'>
+            <ul className='JointripCardUL'>
+               <li> <span className='tripCardName'>{props.trip.Name}  </span></li>
+               <li><span>{props.trip.days} days  </span></li>
+               <li ><span className='membersDiv'>{membersLength} members { <MdOutlineExpandMore className='moreIcontrip' onClick={()=>{setMore(!more)}}></MdOutlineExpandMore>}</span></li>
+               {more?props.trip.members.map((curr,i)=>{
+                   return <span>{curr}</span>
+               }):""}
+               <li><span>created by: {props.trip.planner}  </span></li>
+               <li><button className='placesBtn' onClick={()=>{setPlaces(!places)}}>{props.trip.posts.length} Places</button></li>
+               
+                {props.trip.posts.map((curr,i)=>{
+                return <li>{places?<span key={i}>place {i+1} {curr.name}  </span>:""}</li>
+                })} 
+                <li><button className='joinBtn' onClick={()=>jointhetrip()}>Join</button></li>
+            </ul>
         </div>
     )
 }

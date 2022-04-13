@@ -1,5 +1,6 @@
   .mainContainer {
-    background-color: #351d0088;
+    /* background-color: #351d0088; */
+    background-image: url('C:\Users\Yara Waheb\OneDrive\שולחן העבודה\lotus\theProject\project\my-app\public\images\tr.webp');
     font-size: 26px;
     width: 500px;
     height: min-content;
@@ -52,6 +53,7 @@
  .mainContainer .item-list {
     display: flex;
     flex-direction: column;
+    background-color: rgba(250, 239, 218, 0.489);
   }
   
  .mainContainer .item-container {

@@ -51,11 +51,11 @@ export default function NewTrip(props:{userName:string ,postItem:{name:String,lo
     <form  className='thenewTripForm' id="newTripForm" onSubmit={(e) => { newTrip(e) }}>
         <div className='nameFeild'>
             <input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "Name")}}
-            type="text"  id="Name" name="Name"  placeholder="trip name" />
+            type="text"  id="Name" name="Name"  placeholder="Trip name" />
         </div>
         <div className='daysFeild'>
             <input onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {textWasChanged(e, "days")}}
-            type="text"  id="days" name="days"  placeholder="number of days" />
+            type="text"  id="days" name="days"  placeholder="Number of days" />
         </div>
         <div className='addTripButton'><button id='addTrip' type="submit" >create trip</button></div>
     </form>

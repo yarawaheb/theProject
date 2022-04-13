@@ -4,6 +4,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url('C:\Users\Yara Waheb\OneDrive\שולחן העבודה\lotus\theProject\project\my-app\public\images\globe.jpg');
-    background-size: cover;
+    /* background-image: url('C:\Users\Yara Waheb\OneDrive\שולחן העבודה\lotus\theProject\project\my-app\public\images\globe.jpg');
+    background-size: cover; */
+}
+
+.thenewTripForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.addTripButton{
+    margin-top: 15px;
 }
